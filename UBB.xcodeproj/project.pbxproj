@@ -13,6 +13,7 @@
 		E23116AB2523EA2000835BA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23116AA2523EA2000835BA6 /* Preview Assets.xcassets */; };
 		E23116B52523EA5E00835BA6 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E23116B42523EA5E00835BA6 /* SwiftSoup */; };
 		E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116B82523EA7100835BA6 /* TimetableService.swift */; };
+		E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E233F66D2528BCD2009D9399 /* TimetableTypes.swift */; };
 		E26CEBC225274E5F00BF4333 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CEBC125274E5F00BF4333 /* UserSettings.swift */; };
 		E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CEBC52527507B00BF4333 /* SettingsView.swift */; };
 		E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F6A272527E4D7002F74CC /* UserDefault.swift */; };
@@ -26,6 +27,7 @@
 		E23116AA2523EA2000835BA6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E23116AC2523EA2000835BA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E23116B82523EA7100835BA6 /* TimetableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableService.swift; sourceTree = "<group>"; };
+		E233F66D2528BCD2009D9399 /* TimetableTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableTypes.swift; sourceTree = "<group>"; };
 		E26CEBC125274E5F00BF4333 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		E26CEBC52527507B00BF4333 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E26F6A272527E4D7002F74CC /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				E26CEBC125274E5F00BF4333 /* UserSettings.swift */,
+				E233F66D2528BCD2009D9399 /* TimetableTypes.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */,
 				E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */,
 				E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */,
+				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
 				E26CEBC225274E5F00BF4333 /* UserSettings.swift in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,
 				E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */,

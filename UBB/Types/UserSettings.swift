@@ -29,6 +29,12 @@ class UserSettings: ObservableObject {
         }
     }
     
+    @Published var weekViewType: WeekViewType = .both {
+        didSet {
+//            self.updateTimetableWeek()
+        }
+    }
+    
     func updateTimetable() {
         if let year = self.year, let group = self.group {
             TimetableService.shared.getTimetable(year: year, group: group) { timetable in
@@ -36,11 +42,6 @@ class UserSettings: ObservableObject {
                     var array: [Timetable] = []
                     var temp: Timetable = [timetable[0]]
                     for course in timetable[1...] {
-                        if let semigroup = self.semigroup {
-                            if course.group.split(separator: "/").count == 2, let last = course.group.last, String(last) != semigroup.id {
-                                continue
-                            }
-                        }
                         if course.day == temp[0].day {
                             temp.append(course)
                         } else {
@@ -55,6 +56,25 @@ class UserSettings: ObservableObject {
                 }
             }
         }
+    }
+    
+    func validateCourse(_ course: Course) -> Bool {
+        if self.weekViewType != .both {
+            if let week = course.frequency.last, let number = Int(String(week)) {
+                if
+                    (number == 1 && self.weekViewType != .one) ||
+                    (number == 2 && self.weekViewType != .two)
+                {
+                    return false
+                }
+            }
+        }
+        if let semigroup = self.semigroup {
+            if course.group.split(separator: "/").count == 2, let last = course.group.last, String(last) != semigroup.id {
+                return false
+            }
+        }
+        return true
     }
     
     init() {

@@ -9,36 +9,49 @@ import SwiftUI
 
 struct TimetableView: View {
     @EnvironmentObject var userSettings: UserSettings
-        
+            
     var body: some View {
         NavigationView {
-            List {
-                if let timetable = self.userSettings.timetable {
-                    ForEach(Array(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].enumerated()), id: \.element) { index, day in
-                        Section(header: Text(day)) {
-                            ForEach(timetable[index], id: \.id) { course in
-                                HStack {
-                                    VStack {
-                                        Text("\(course.startHour):00")
-                                        Text("\(course.endHour):00")
-                                        if let week = course.frequency.last, let number = Int(String(week)) {
-                                            Text("week \(number)")
+            VStack {
+                Picker(selection: self.$userSettings.weekViewType, label: Text("Week view")) {
+                    Text("Week 1").tag(WeekViewType.one)
+                    Text("Week 2").tag(WeekViewType.two)
+                    Text("Both weeks").tag(WeekViewType.both)
+                }
+                .padding()
+                .pickerStyle(SegmentedPickerStyle())
+                List {
+                    if let timetable = self.userSettings.timetable {
+                        ForEach(Array(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].enumerated()), id: \.element) { index, day in
+                            Section(header: Text(day)) {
+                                ForEach(timetable[index], id: \.id) { course in
+                                    if self.userSettings.validateCourse(course) {
+                                        HStack {
+                                            VStack {
+                                                Text("\(course.startHour):00")
+                                                Text("\(course.endHour):00")
+                                                if self.userSettings.weekViewType == .both, let week = course.frequency.last, let number = Int(String(week)) {
+                                                    Text("week \(number)")
+                                                    
+                                                }
+                                            }
+                                            .frame(width: UIScreen.main.bounds.width * 0.15)
+                                            Divider()
+                                            VStack(alignment: .leading) {
+                                                Text("\(course.type.uppercased()): \(course.name)")
+                                                Text(course.teacher)
+                                            }
                                         }
-                                    }
-                                    .frame(width: UIScreen.main.bounds.width * 0.15)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("\(course.type.uppercased()): \(course.name)")
-                                        Text(course.teacher)
                                     }
                                 }
                             }
                         }
                     }
                 }
+                .animation(.default)
+                .navigationBarTitle("Timetable")
+                .navigationBarItems(leading: EmptyView(), trailing: EmptyView()) // the fuck
             }
-            .navigationBarTitle("Timetable")
-            .navigationBarItems(leading: EmptyView(), trailing: EmptyView()) // the fuck
         }
     }
 }
