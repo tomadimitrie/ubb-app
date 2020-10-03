@@ -15,5 +15,5 @@ Currently only for the CS section
 - [ ] ?
 
 # Screenshots:
-[timetable-dark](./readme-assets/timetable-dark.png)
-[timetable-light](./readme-assets/timetable-light.png)
+![timetable-dark](./readme-assets/timetable-dark.png)
+![timetable-light](./readme-assets/timetable-light.png)
