@@ -8,15 +8,10 @@
 import Foundation
 import Combine
 
-protocol PublishedWrapper: class {
-    var objectWillChange: ObservableObjectPublisher? { get set }
-}
-
 @propertyWrapper
-class UserDefault<Value: Codable>: PublishedWrapper {
+class UserDefault<Value: Codable> {
     let initialValue: Value?
     let key: String
-    weak var objectWillChange: ObservableObjectPublisher?
 
     init(wrappedValue: Value?, _ key: String) {
         self.key = key
@@ -33,7 +28,6 @@ class UserDefault<Value: Codable>: PublishedWrapper {
             }
         }
         set {
-            self.objectWillChange?.send()
             if let newValue = newValue {
                 UserDefaults.standard.set(try! PropertyListEncoder().encode(newValue), forKey: self.key)
             } else {

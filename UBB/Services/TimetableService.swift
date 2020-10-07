@@ -7,13 +7,16 @@
 
 import Foundation
 import SwiftSoup
+import SwiftUI
 
 class TimetableService {
     static let shared = TimetableService()
     
     private init() {}
     
-    func getTimetable(year: Year, group: Group, completionHandler: @escaping (Timetable?) -> ()) {
+    let persistenceController = PersistenceController.shared
+    
+    func getTimetable(year: Year, group: Group, semigroup: Semigroup, completionHandler: @escaping ([Course]?) -> ()) {
         let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-1/tabelar/\(year.id).html")!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
@@ -31,22 +34,38 @@ class TimetableService {
                             try td.text()
                         }
                     }
-                    .map { data -> Course in
+                    .compactMap { data -> Course? in
+                        if data[4].split(separator: "/").count == 2, let last = data[4].last, String(last) != semigroup.id {
+                            return nil
+                        }
+                        let day: Day
+                        switch data[0] {
+                            case "Luni":
+                                day = .monday
+                            case "Marti":
+                                day = .tuesday
+                            case "Miercuri":
+                                day = .wednesday
+                            case "Joi":
+                                day = .thursday
+                            case "Vineri":
+                                day = .friday
+                            default:
+                                return nil
+                        }
                         let hourArray = data[1].split(separator: "-")
                         let startHour = Int(String(hourArray[0]))!
                         let endHour = Int(String(hourArray[1]))!
-                        return Course(
-                            day: data[0],
-                            startHour: startHour,
-                            endHour: endHour,
-                            frequency: data[2],
-                            room: data[3],
-                            group: data[4],
-                            type: data[5],
-                            name: data[6],
-                            teacher: data[7],
-                            id: UUID().uuidString
-                        )
+                        let course = Course(context: self.persistenceController.container.viewContext)
+                        course.day = day.rawValue
+                        course.startHour = Int16(startHour)
+                        course.endHour = Int16(endHour)
+                        course.frequency = data[2]
+                        course.room = data[3]
+                        course.type = data[5]
+                        course.name = data[6]
+                        course.teacher = data[7]
+                        return course
                     }
                 )
             }

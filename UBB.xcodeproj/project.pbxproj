@@ -17,6 +17,8 @@
 		E26CEBC225274E5F00BF4333 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CEBC125274E5F00BF4333 /* UserSettings.swift */; };
 		E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CEBC52527507B00BF4333 /* SettingsView.swift */; };
 		E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F6A272527E4D7002F74CC /* UserDefault.swift */; };
+		E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */; };
+		E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D5E252D2D64002935D7 /* Persistence.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		E26CEBC125274E5F00BF4333 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		E26CEBC52527507B00BF4333 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E26F6A272527E4D7002F74CC /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
+		E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Timetable.xcdatamodel; sourceTree = "<group>"; };
+		E27D4D5E252D2D64002935D7 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 		E23116A22523EA1E00835BA6 /* UBB */ = {
 			isa = PBXGroup;
 			children = (
+				E27D4D38252D2D0B002935D7 /* Core Data */,
 				E26CEBC42527506E00BF4333 /* Views */,
 				E26CEBC025274E4700BF4333 /* Types */,
 				E23CD533252718D9008B7C5E /* Helpers */,
@@ -116,6 +121,15 @@
 				E26CEBC52527507B00BF4333 /* SettingsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E27D4D38252D2D0B002935D7 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */,
+				E27D4D5E252D2D64002935D7 /* Persistence.swift */,
+			);
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,11 +207,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */,
 				E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */,
 				E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */,
 				E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */,
 				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
 				E26CEBC225274E5F00BF4333 /* UserSettings.swift in Sources */,
+				E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,
 				E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */,
 			);
@@ -407,6 +423,19 @@
 			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */,
+			);
+			currentVersion = E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */;
+			path = Timetable.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E23116982523EA1E00835BA6 /* Project object */;
 }

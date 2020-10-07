@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct UBBApp: App {
     let userSettings = UserSettings()
+    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
@@ -26,6 +27,7 @@ struct UBBApp: App {
                     }
             }
             .environmentObject(self.userSettings)
+            .environment(\.managedObjectContext, self.persistenceController.container.viewContext)
         }
     }
 }

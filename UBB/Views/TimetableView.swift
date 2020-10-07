@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TimetableView: View {
     @EnvironmentObject var userSettings: UserSettings
-            
+    @FetchRequest(entity: Course.entity(), sortDescriptors: []) var timetable: FetchedResults<Course>
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -21,26 +22,23 @@ struct TimetableView: View {
                 .padding()
                 .pickerStyle(SegmentedPickerStyle())
                 List {
-                    if let timetable = self.userSettings.timetable {
-                        ForEach(Array(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].enumerated()), id: \.element) { index, day in
-                            Section(header: Text(day)) {
-                                ForEach(timetable[index], id: \.id) { course in
-                                    if self.userSettings.validateCourse(course) {
-                                        HStack {
-                                            VStack {
-                                                Text("\(course.startHour):00")
-                                                Text("\(course.endHour):00")
-                                                if self.userSettings.weekViewType == .both, let week = course.frequency.last, let number = Int(String(week)) {
-                                                    Text("week \(number)")
-                                                    
-                                                }
+                    ForEach(Day.allCases, id: \.self) { day in
+                        Section(header: Text(day.rawValue.capitalized)) {
+                            ForEach(self.timetable.filter { $0.day == day.rawValue }, id: \.id) { course in
+                                if self.userSettings.validateCourse(course) {
+                                    HStack {
+                                        VStack {
+                                            Text("\(course.startHour):00")
+                                            Text("\(course.endHour):00")
+                                            if self.userSettings.weekViewType == .both, let week = course.frequency?.last, let number = Int(String(week)) {
+                                                Text("week \(number)")
                                             }
-                                            .frame(width: UIScreen.main.bounds.width * 0.15)
-                                            Divider()
-                                            VStack(alignment: .leading) {
-                                                Text("\(course.type.uppercased()): \(course.name)")
-                                                Text(course.teacher)
-                                            }
+                                        }
+                                        .frame(width: UIScreen.main.bounds.width * 0.15)
+                                        Divider()
+                                        VStack(alignment: .leading) {
+                                            Text("\(course.type?.uppercased() ?? ""): \(course.name ?? "")")
+                                            Text(course.teacher ?? "")
                                         }
                                     }
                                 }

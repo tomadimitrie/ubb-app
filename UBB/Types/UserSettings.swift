@@ -7,60 +7,65 @@
 
 import Foundation
 import Combine
+import SwiftUI
+import CoreData
 
 class UserSettings: ObservableObject {
-    @Published var timetable: [Timetable]? = nil
+    let persistenceController = PersistenceController.shared
+    
+    let objectWillChange = ObservableObjectPublisher()
     
     @UserDefault("year") var year: Year? = nil {
-        didSet {
-            self.timetable = nil
+        willSet {
+            self.group = nil
+            self.semigroup = nil
+            self.objectWillChange.send()
+            self.clearTimetable()
         }
     }
     
     @UserDefault("group") var group: Group? = nil {
-        didSet {
-            self.updateTimetable()
+        willSet {
+            self.semigroup = nil
+            self.clearTimetable()
+            self.objectWillChange.send()
         }
     }
     
     @UserDefault("semigroup") var semigroup: Semigroup? = nil {
+        willSet {
+            self.objectWillChange.send()
+        }
         didSet {
             self.updateTimetable()
         }
     }
     
     @Published var weekViewType: WeekViewType = .both {
-        didSet {
-//            self.updateTimetableWeek()
+        willSet {
+            self.objectWillChange.send()
         }
     }
     
+    func clearTimetable() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Course.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        try! self.persistenceController.container.persistentStoreCoordinator.execute(deleteRequest, with: self.persistenceController.container.viewContext)
+        self.persistenceController.container.viewContext.reset()
+    }
+    
     func updateTimetable() {
-        if let year = self.year, let group = self.group {
-            TimetableService.shared.getTimetable(year: year, group: group) { timetable in
-                if let timetable = timetable {
-                    var array: [Timetable] = []
-                    var temp: Timetable = [timetable[0]]
-                    for course in timetable[1...] {
-                        if course.day == temp[0].day {
-                            temp.append(course)
-                        } else {
-                            array.append(temp)
-                            temp = [course]
-                        }
-                    }
-                    array.append(temp)
-                    DispatchQueue.main.async {
-                        self.timetable = array
-                    }
-                }
+        self.clearTimetable()
+        if let year = self.year, let group = self.group, let semigroup = self.semigroup {
+            TimetableService.shared.getTimetable(year: year, group: group, semigroup: semigroup) { timetable in
+                try! self.persistenceController.container.viewContext.save()
             }
         }
     }
     
     func validateCourse(_ course: Course) -> Bool {
         if self.weekViewType != .both {
-            if let week = course.frequency.last, let number = Int(String(week)) {
+            if let week = course.frequency?.last, let number = Int(String(week)) {
                 if
                     (number == 1 && self.weekViewType != .one) ||
                     (number == 2 && self.weekViewType != .two)
@@ -69,15 +74,6 @@ class UserSettings: ObservableObject {
                 }
             }
         }
-        if let semigroup = self.semigroup {
-            if course.group.split(separator: "/").count == 2, let last = course.group.last, String(last) != semigroup.id {
-                return false
-            }
-        }
         return true
-    }
-    
-    init() {
-        self.updateTimetable()
     }
 }

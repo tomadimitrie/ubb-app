@@ -7,29 +7,6 @@
 
 import Foundation
 
-struct Course: Codable {
-    let day: String
-    let startHour: Int
-    let endHour: Int
-    let frequency: String
-    let room: String
-    let group: String
-    let type: String
-    let name: String
-    let teacher: String
-    let id: String
-    
-    var shouldShow: Bool = true
-}
-
-typealias Timetable = [Course]
-
-enum TimetableError: Error {
-    case groupNotFound
-    case groupTimetableNotFound
-    case parsingError
-}
-
 struct Item: Codable {
     let id: String
     let value: String
@@ -41,4 +18,8 @@ typealias Semigroup = Item
 
 enum WeekViewType {
     case one, two, both
+}
+
+enum Day: String, CaseIterable {
+    case monday, tuesday, wednesday, thursday, friday
 }

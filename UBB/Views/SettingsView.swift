@@ -49,8 +49,6 @@ struct SettingView: View {
                     switch self.setting {
                         case .year:
                             self.userSettings.year = item
-                            self.userSettings.group = nil
-                            self.userSettings.semigroup = nil
                         case .group:
                             self.userSettings.group = item
                         case .semigroup:
