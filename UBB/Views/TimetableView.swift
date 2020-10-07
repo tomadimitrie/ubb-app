@@ -9,7 +9,12 @@ import SwiftUI
 
 struct TimetableView: View {
     @EnvironmentObject var userSettings: UserSettings
-    @FetchRequest(entity: Course.entity(), sortDescriptors: []) var timetable: FetchedResults<Course>
+    @FetchRequest(
+        entity: Course.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(key: "startHour", ascending: true)
+        ]
+    ) var timetable: FetchedResults<Course>
     
     @Binding var activeTab: Int
     
