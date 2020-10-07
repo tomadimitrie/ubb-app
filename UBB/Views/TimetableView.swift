@@ -30,15 +30,15 @@ struct TimetableView: View {
                                         VStack {
                                             Text("\(course.startHour):00")
                                             Text("\(course.endHour):00")
-                                            if self.userSettings.weekViewType == .both, let week = course.frequency?.last, let number = Int(String(week)) {
+                                            if self.userSettings.weekViewType == .both, let week = course.frequency.last, let number = Int(String(week)) {
                                                 Text("week \(number)")
                                             }
                                         }
                                         .frame(width: UIScreen.main.bounds.width * 0.15)
                                         Divider()
                                         VStack(alignment: .leading) {
-                                            Text("\(course.type?.uppercased() ?? ""): \(course.name ?? "")")
-                                            Text(course.teacher ?? "")
+                                            Text("\(course.type.uppercased()): \(course.name)")
+                                            Text(course.teacher)
                                         }
                                     }
                                 }

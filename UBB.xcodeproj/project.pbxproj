@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E203F8D2252D3F3000061917 /* Course+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */; };
+		E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */; };
 		E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116A32523EA1E00835BA6 /* UBBApp.swift */; };
 		E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116A52523EA1E00835BA6 /* TimetableView.swift */; };
 		E23116A82523EA2000835BA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23116A72523EA2000835BA6 /* Assets.xcassets */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E23116A02523EA1E00835BA6 /* UBB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UBB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23116A32523EA1E00835BA6 /* UBBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBApp.swift; sourceTree = "<group>"; };
 		E23116A52523EA1E00835BA6 /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 		E27D4D38252D2D0B002935D7 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */,
+				E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */,
 				E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */,
 				E27D4D5E252D2D64002935D7 /* Persistence.swift */,
 			);
@@ -207,11 +213,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E203F8D2252D3F3000061917 /* Course+CoreDataClass.swift in Sources */,
 				E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */,
 				E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */,
 				E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */,
 				E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */,
 				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
+				E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */,
 				E26CEBC225274E5F00BF4333 /* UserSettings.swift in Sources */,
 				E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,

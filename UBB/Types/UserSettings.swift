@@ -65,7 +65,7 @@ class UserSettings: ObservableObject {
     
     func validateCourse(_ course: Course) -> Bool {
         if self.weekViewType != .both {
-            if let week = course.frequency?.last, let number = Int(String(week)) {
+            if let week = course.frequency.last, let number = Int(String(week)) {
                 if
                     (number == 1 && self.weekViewType != .one) ||
                     (number == 2 && self.weekViewType != .two)
