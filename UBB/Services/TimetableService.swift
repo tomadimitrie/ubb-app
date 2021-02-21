@@ -17,7 +17,7 @@ class TimetableService {
     let persistenceController = PersistenceController.shared
     
     func getTimetable(year: Year, group: Group, semigroup: Semigroup, completionHandler: @escaping ([Course]?) -> ()) {
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-1/tabelar/\(year.id).html")!
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-2/tabelar/\(year.id).html")!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 guard let html = String(data: data, encoding: .ascii) else { return }

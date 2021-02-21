@@ -17,6 +17,7 @@ struct TimetableView: View {
     ) var timetable: FetchedResults<Course>
     
     @Binding var activeTab: Int
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
         NavigationView {
@@ -67,6 +68,11 @@ struct TimetableView: View {
             }
             .animation(.default)
             .navigationBarTitle("Timetable")
+            .toolbar {
+                Button("Redownload") {
+                    self.userSettings.updateTimetable()
+                }
+            }
         }
     }
 }

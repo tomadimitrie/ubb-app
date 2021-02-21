@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct UBBApp: App {
-    let userSettings = UserSettings()
+    let userSettings = UserSettings.shared
     let persistenceController = PersistenceController.shared
     
     @State var activeTab: Int = 0

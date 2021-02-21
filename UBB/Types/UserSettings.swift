@@ -11,6 +11,10 @@ import SwiftUI
 import CoreData
 
 class UserSettings: ObservableObject {
+    private init() {}
+    
+    static let shared = UserSettings()
+    
     let persistenceController = PersistenceController.shared
     
     let objectWillChange = ObservableObjectPublisher()
@@ -49,23 +53,43 @@ class UserSettings: ObservableObject {
     
     func clearTimetable() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Course.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        try! self.persistenceController.container.persistentStoreCoordinator.execute(deleteRequest, with: self.persistenceController.container.viewContext)
-        self.persistenceController.container.viewContext.reset()
+        let result = try! self.persistenceController.container.viewContext.fetch(fetchRequest)
+        for managedObject in result {
+            if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
+                self.persistenceController
+                    .container
+                    .viewContext
+                    .delete(managedObjectData)
+            }
+        }
     }
     
     func updateTimetable() {
         self.clearTimetable()
-        if let year = self.year, let group = self.group, let semigroup = self.semigroup {
-            TimetableService.shared.getTimetable(year: year, group: group, semigroup: semigroup) { timetable in
-                try! self.persistenceController.container.viewContext.save()
+        if
+            let year = self.year,
+            let group = self.group,
+            let semigroup = self.semigroup
+        {
+            TimetableService.shared.getTimetable(
+                year: year,
+                group: group,
+                semigroup: semigroup
+            ) { timetable in
+                try! self.persistenceController
+                    .container
+                    .viewContext
+                    .save()
             }
         }
     }
     
     func validateCourse(_ course: Course) -> Bool {
         if self.weekViewType != .both {
-            if let week = course.frequency.last, let number = Int(String(week)) {
+            if
+                let week = course.frequency.last,
+                let number = Int(String(week))
+            {
                 if
                     (number == 1 && self.weekViewType != .one) ||
                     (number == 2 && self.weekViewType != .two)
