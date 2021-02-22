@@ -22,7 +22,7 @@ struct TimetableView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if timetable.count == 0 {
+                if self.timetable.count == 0 {
                     Text("It's lonely here")
                     Text("Go to Settings to configure your timetable")
                     Button(action: {
@@ -37,7 +37,7 @@ struct TimetableView: View {
                         Text("Week 2").tag(WeekViewType.two)
                         Text("Both weeks").tag(WeekViewType.both)
                     }
-                    .padding()
+                    .padding([.top, .leading, .trailing])
                     .pickerStyle(SegmentedPickerStyle())
                     List {
                         ForEach(Day.allCases, id: \.self) { day in
@@ -72,6 +72,7 @@ struct TimetableView: View {
                 Button("Redownload") {
                     self.userSettings.updateTimetable()
                 }
+                .disabled(self.timetable.count == 0)
             }
         }
     }

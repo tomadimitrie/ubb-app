@@ -30,9 +30,16 @@ class UserSettings: ObservableObject {
     
     @UserDefault("group") var group: Group? = nil {
         willSet {
-            self.semigroup = nil
+            if self.semigroup != Semigroup.default {
+                self.semigroup = nil
+            }
             self.clearTimetable()
             self.objectWillChange.send()
+        }
+        didSet {
+            if self.semigroup == Semigroup.default {
+                self.updateTimetable()
+            }
         }
     }
     

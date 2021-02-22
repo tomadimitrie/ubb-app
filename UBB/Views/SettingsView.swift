@@ -7,52 +7,57 @@
 
 import SwiftUI
 
-enum Setting: String {
-    case year, group, semigroup
-}
-
 struct SettingsView: View {
     @EnvironmentObject var userSettings: UserSettings
     
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: SettingView(setting: .year)) {
+                NavigationLink(destination: SettingView<Year>()) {
                     Text("Year \(self.userSettings.year.map { "(\($0.id))" } ?? "")")
                 }
-                NavigationLink(destination: SettingView(setting: .group)) {
+                NavigationLink(destination: SettingView<Group>()) {
                     Text("Group \(self.userSettings.group.map { "(\($0.id))" } ?? "")")
                 }
                 .disabled(self.userSettings.year == nil)
-                NavigationLink(destination: SettingView(setting: .semigroup)) {
+                NavigationLink(destination: SettingView<Semigroup>()) {
                     Text("Semigroup \(self.userSettings.semigroup.map { "(\($0.id))" } ?? "")")
                 }
-                .disabled(self.userSettings.group == nil)
+                .disabled(self.userSettings.group == nil || self.userSettings.semigroup?.id == "default")
             }
             .navigationBarTitle(Text("Settings"))
         }
     }
 }
 
-struct SettingView: View {
-    let setting: Setting
-    
+struct SettingView<T: Item>: View {
     @EnvironmentObject var userSettings: UserSettings
     @Environment(\.presentationMode) var presentationMode
     
-    @State var items: [Item] = []
+    @State var items: [T] = []
     
     var body: some View {
         List {
             ForEach(self.items, id: \.id) { item in
                 Button(action: {
-                    switch self.setting {
-                        case .year:
-                            self.userSettings.year = item
-                        case .group:
-                            self.userSettings.group = item
-                        case .semigroup:
-                            self.userSettings.semigroup = item
+                    switch T.self {
+                        case is Year.Type:
+                            self.userSettings.year = item as? Year
+                        case is Group.Type:
+                            TimetableService.shared.getSemigroups(year: self.userSettings.year!, group: item as! Group) { semigroups in
+                                if let semigroups = semigroups {
+                                    DispatchQueue.main.async {
+                                        if semigroups.count == 0 {
+                                            self.userSettings.semigroup = Semigroup.default
+                                        }
+                                        self.userSettings.group = item as? Group
+                                    }
+                                }
+                            }
+                        case is Semigroup.Type:
+                            self.userSettings.semigroup = item as? Semigroup
+                        default:
+                            ()
                     }
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
@@ -60,23 +65,32 @@ struct SettingView: View {
                 }
             }
         }
-        .navigationTitle(self.setting.rawValue.capitalized)
+        .navigationTitle(NSStringFromClass(T.self).components(separatedBy: ".").last!)
         .onAppear {
-            switch self.setting {
-                case .year:
+            switch T.self {
+                case is Year.Type:
                     TimetableService.shared.getYears { years in
                         if let years = years {
-                            self.items = years
+                            self.items = years as! [T]
                         }
                     }
-                case .group:
+                case is Group.Type:
                     TimetableService.shared.getGroups(for: self.userSettings.year!) { groups in
                         if let groups = groups {
-                            self.items = groups
+                            self.items = groups as! [T]
                         }
                     }
-                case .semigroup:
-                    self.items = [Item(id: "1", value: "1"), Item(id: "2", value: "2")]
+                case is Semigroup.Type:
+                    TimetableService.shared.getSemigroups(
+                        year: self.userSettings.year!,
+                        group: self.userSettings.group!
+                    ) { semigroups in
+                        if let semigroups = semigroups {
+                            self.items = semigroups as! [T]
+                        }
+                    }
+                default:
+                    ()
             }
         }
     }

@@ -21,10 +21,9 @@ class TimetableService {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 guard let html = String(data: data, encoding: .ascii) else { return }
-                let index = Int(String(group.id.last!))! - 1
                 completionHandler(try? SwiftSoup
                     .parse(html)
-                    .select("table")[index]
+                    .select("table")[group.index]
                     .select("tr")[1...]
                     .map { tr in
                         try tr.select("td")
@@ -35,7 +34,11 @@ class TimetableService {
                         }
                     }
                     .compactMap { data -> Course? in
-                        if data[4].split(separator: "/").count == 2, let last = data[4].last, String(last) != semigroup.id {
+                        if
+                            data[4].split(separator: "/").count == 2,
+                            let last = data[4].last,
+                            String(last) != semigroup.id
+                        {
                             return nil
                         }
                         let day: Day
@@ -101,7 +104,7 @@ class TimetableService {
                     .flatMap { $0 }
                     .map { tuple in
                         tuple.ids.enumerated().map { index, id in
-                            Year(id: id, value: "\(tuple.name) - Year \(index + 1)")
+                            Year(id: id, value: "\(tuple.name) - Year \(index + 1)", index: index)
                         }
                     }
                     .flatMap { $0 }
@@ -123,8 +126,37 @@ class TimetableService {
                         guard words.count == 2, words.first == "Grupa" else { return nil }
                         return String(words[1])
                     }
-                    .map { group in
-                        Group(id: group, value: group)
+                    .enumerated()
+                    .map { index, group in
+                        Group(id: group, value: group, index: index)
+                    }
+                )
+            }
+        }.resume()
+    }
+    
+    func getSemigroups(year: Year, group: Group, completionHandler: @escaping ([Semigroup]?) -> ()) {
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-1/tabelar/\(year.id).html")!
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data {
+                guard let text = String(data: data, encoding: .ascii) else { return }
+                let regex = try! NSRegularExpression(pattern: "\(group.id)\\/\\d")
+                let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+                let matches = Array(
+                    Set(
+                        results
+                            .map {
+                                String(text[Range($0.range, in: text)!])
+                            }
+                            .map {
+                                Int($0.components(separatedBy: "/")[1])!
+                            }
+                    )
+                )
+                .sorted()
+                completionHandler(
+                    matches.map {
+                        Semigroup(id: "\($0)", value: "\($0)", index: $0)
                     }
                 )
             }
