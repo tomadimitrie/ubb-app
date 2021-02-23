@@ -19,6 +19,7 @@
 		E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F6A272527E4D7002F74CC /* UserDefault.swift */; };
 		E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */; };
 		E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D5E252D2D64002935D7 /* Persistence.swift */; };
+		E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E23116B42523EA5E00835BA6 /* SwiftSoup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +152,7 @@
 			);
 			name = UBB;
 			packageProductDependencies = (
-				E23116B42523EA5E00835BA6,
+				E23116B42523EA5E00835BA6 /* SwiftSoup */,
 			);
 			productName = UBB;
 			productReference = E23116A02523EA1E00835BA6 /* UBB.app */;
@@ -180,7 +182,7 @@
 			);
 			mainGroup = E23116972523EA1E00835BA6;
 			packageReferences = (
-				E23116B32523EA5E00835BA6,
+				E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = E23116A12523EA1E00835BA6 /* Products */;
 			projectDirPath = "";
@@ -355,7 +357,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.toma.UBB;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -377,7 +379,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.toma.UBB;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -408,7 +410,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E23116B32523EA5E00835BA6 = {
+		E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
 			requirement = {
@@ -419,9 +421,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E23116B42523EA5E00835BA6 = {
+		E23116B42523EA5E00835BA6 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E23116B32523EA5E00835BA6;
+			package = E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */

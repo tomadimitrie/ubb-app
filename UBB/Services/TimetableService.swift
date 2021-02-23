@@ -110,7 +110,7 @@ class TimetableService: ObservableObject {
         }.resume()
     }
     
-    func getYears(completionHandler: @escaping ([Year]?) -> ()) {
+    func getYears(completionHandler: @escaping ([[Year]]?) -> ()) {
         let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-1/tabelar/index.html")!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
@@ -139,10 +139,9 @@ class TimetableService: ObservableObject {
                     .flatMap { $0 }
                     .map { tuple in
                         tuple.ids.enumerated().map { index, id in
-                            Year(id: id, value: "\(tuple.name) - Year \(index + 1)", index: index)
+                            Year(id: id, value: tuple.name, index: index)
                         }
                     }
-                    .flatMap { $0 }
                 )
             }
         }.resume()

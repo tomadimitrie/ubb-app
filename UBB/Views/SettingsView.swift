@@ -30,7 +30,7 @@ struct SettingView<T: Item>: View {
     @EnvironmentObject var timetableService: TimetableService
     @Environment(\.presentationMode) var presentationMode
     
-    @State var items: [T] = []
+    @State var items: [[T]] = []
 
     private func onYearPress(_ item: T) {
         self.timetableService.year = item as? Year
@@ -56,7 +56,7 @@ struct SettingView<T: Item>: View {
     private func onAppearForYear() {
         self.timetableService.getYears { years in
             if let years = years {
-                self.items = years as! [T]
+                self.items = years as! [[T]]
             }
         }
     }
@@ -64,7 +64,7 @@ struct SettingView<T: Item>: View {
     private func onAppearForGroup() {
         self.timetableService.getGroups(for: self.timetableService.year!) { groups in
             if let groups = groups {
-                self.items = groups as! [T]
+                self.items = [groups] as! [[T]]
             }
         }
     }
@@ -75,18 +75,33 @@ struct SettingView<T: Item>: View {
             group: self.timetableService.group!
         ) { semigroups in
             if let semigroups = semigroups {
-                self.items = semigroups as! [T]
+                self.items = [semigroups] as! [[T]]
             }
         }
     }
     
-    var body: some View {
+    var yearList: some View {
         List {
-            ForEach(self.items, id: \.id) { item in
+            ForEach(Array(zip(self.items.indices, self.items)), id: \.0) { index, items in
+                Section(header: Text(items[0].value)) {
+                    ForEach(Array(zip(items.indices, items)), id: \.0) { index, item in
+                        Button(action: {
+                            self.onYearPress(item)
+                            self.presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Text("Year \(index + 1)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var list: some View {
+        List {
+            ForEach(self.items.count > 0 ? self.items[0] : [], id: \.id) { item in
                 Button(action: {
                     switch T.self {
-                        case is Year.Type:
-                            self.onYearPress(item)
                         case is Group.Type:
                             self.onGroupPress(item)
                         case is Semigroup.Type:
@@ -98,6 +113,16 @@ struct SettingView<T: Item>: View {
                 }) {
                     Text(item.value)
                 }
+            }
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            if T.self is Year.Type {
+                self.yearList
+            } else {
+                self.list
             }
         }
         .navigationTitle(NSStringFromClass(T.self).components(separatedBy: ".").last!)
