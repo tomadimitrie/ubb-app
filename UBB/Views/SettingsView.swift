@@ -1,40 +1,84 @@
-//
-//  SettingsView.swift
-//  UBB
-//
-//  Created by Dimitrie-Toma Furdui on 02/10/2020.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var timetableService: TimetableService
     
     var body: some View {
         NavigationView {
             List {
                 NavigationLink(destination: SettingView<Year>()) {
-                    Text("Year \(self.userSettings.year.map { "(\($0.id))" } ?? "")")
+                    Text("Year \(self.timetableService.year.map { "(\($0.id))" } ?? "")")
                 }
                 NavigationLink(destination: SettingView<Group>()) {
-                    Text("Group \(self.userSettings.group.map { "(\($0.id))" } ?? "")")
+                    Text("Group \(self.timetableService.group.map { "(\($0.id))" } ?? "")")
                 }
-                .disabled(self.userSettings.year == nil)
+                .disabled(self.timetableService.year == nil)
                 NavigationLink(destination: SettingView<Semigroup>()) {
-                    Text("Semigroup \(self.userSettings.semigroup.map { "(\($0.id))" } ?? "")")
+                    Text("Semigroup \(self.timetableService.semigroup.map { "(\($0.id))" } ?? "")")
                 }
-                .disabled(self.userSettings.group == nil || self.userSettings.semigroup?.id == "default")
+                .disabled(
+                    self.timetableService.group == nil ||
+                    self.timetableService.semigroup?.id == "default"
+                )
             }
-            .navigationBarTitle(Text("Settings"))
+            .navigationTitle(Text("Settings"))
         }
     }
 }
 
 struct SettingView<T: Item>: View {
-    @EnvironmentObject var userSettings: UserSettings
+    @EnvironmentObject var timetableService: TimetableService
     @Environment(\.presentationMode) var presentationMode
     
     @State var items: [T] = []
+
+    private func onYearPress(_ item: T) {
+        self.timetableService.year = item as? Year
+    }
+
+    private func onGroupPress(_ item: T) {
+        self.timetableService.getSemigroups(year: self.timetableService.year!, group: item as! Group) { semigroups in
+            if let semigroups = semigroups {
+                DispatchQueue.main.async {
+                    if semigroups.count == 0 {
+                        self.timetableService.semigroup = Semigroup.default
+                    }
+                    self.timetableService.group = item as? Group
+                }
+            }
+        }
+    }
+
+    private func onSemigroupPress(_ item: T) {
+        self.timetableService.semigroup = item as? Semigroup
+    }
+
+    private func onAppearForYear() {
+        self.timetableService.getYears { years in
+            if let years = years {
+                self.items = years as! [T]
+            }
+        }
+    }
+
+    private func onAppearForGroup() {
+        self.timetableService.getGroups(for: self.timetableService.year!) { groups in
+            if let groups = groups {
+                self.items = groups as! [T]
+            }
+        }
+    }
+
+    private func onAppearForSemigroup() {
+        self.timetableService.getSemigroups(
+            year: self.timetableService.year!,
+            group: self.timetableService.group!
+        ) { semigroups in
+            if let semigroups = semigroups {
+                self.items = semigroups as! [T]
+            }
+        }
+    }
     
     var body: some View {
         List {
@@ -42,20 +86,11 @@ struct SettingView<T: Item>: View {
                 Button(action: {
                     switch T.self {
                         case is Year.Type:
-                            self.userSettings.year = item as? Year
+                            self.onYearPress(item)
                         case is Group.Type:
-                            TimetableService.shared.getSemigroups(year: self.userSettings.year!, group: item as! Group) { semigroups in
-                                if let semigroups = semigroups {
-                                    DispatchQueue.main.async {
-                                        if semigroups.count == 0 {
-                                            self.userSettings.semigroup = Semigroup.default
-                                        }
-                                        self.userSettings.group = item as? Group
-                                    }
-                                }
-                            }
+                            self.onGroupPress(item)
                         case is Semigroup.Type:
-                            self.userSettings.semigroup = item as? Semigroup
+                           self.onSemigroupPress(item)
                         default:
                             ()
                     }
@@ -69,26 +104,11 @@ struct SettingView<T: Item>: View {
         .onAppear {
             switch T.self {
                 case is Year.Type:
-                    TimetableService.shared.getYears { years in
-                        if let years = years {
-                            self.items = years as! [T]
-                        }
-                    }
+                    self.onAppearForYear()
                 case is Group.Type:
-                    TimetableService.shared.getGroups(for: self.userSettings.year!) { groups in
-                        if let groups = groups {
-                            self.items = groups as! [T]
-                        }
-                    }
+                    self.onAppearForGroup()
                 case is Semigroup.Type:
-                    TimetableService.shared.getSemigroups(
-                        year: self.userSettings.year!,
-                        group: self.userSettings.group!
-                    ) { semigroups in
-                        if let semigroups = semigroups {
-                            self.items = semigroups as! [T]
-                        }
-                    }
+                    self.onAppearForSemigroup()
                 default:
                     ()
             }

@@ -1,10 +1,3 @@
-//
-//  UserDefault.swift
-//  UBB
-//
-//  Created by Dimitrie-Toma Furdui on 03/10/2020.
-//
-
 import Foundation
 import Combine
 

@@ -1,76 +1,111 @@
-//
-//  TimetableService.swift
-//  UBB
-//
-//  Created by Dimitrie-Toma Furdui on 30/09/2020.
-//
-
 import Foundation
 import SwiftSoup
-import SwiftUI
+import Combine
+import CoreData
 
-class TimetableService {
-    static let shared = TimetableService()
-    
-    private init() {}
-    
-    let persistenceController = PersistenceController.shared
-    
-    func getTimetable(year: Year, group: Group, semigroup: Semigroup, completionHandler: @escaping ([Course]?) -> ()) {
+class TimetableService: ObservableObject {
+    @UserDefault("year") var year: Year? = nil {
+        willSet {
+            self.group = nil
+            self.semigroup = nil
+            self.objectWillChange.send()
+            self.clearTimetable()
+        }
+    }
+
+    @UserDefault("group") var group: Group? = nil {
+        willSet {
+            if self.semigroup != Semigroup.default {
+                self.semigroup = nil
+            }
+            self.clearTimetable()
+            self.objectWillChange.send()
+        }
+        didSet {
+            if self.semigroup == Semigroup.default {
+                self.updateTimetable()
+            }
+        }
+    }
+
+    @UserDefault("semigroup") var semigroup: Semigroup? = nil {
+        willSet {
+            self.objectWillChange.send()
+        }
+        didSet {
+            self.updateTimetable()
+        }
+    }
+
+    @Published var weekViewType: WeekViewType = .both {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+
+    @Published var errorOccurred = PassthroughSubject<Error, Never>()
+
+    func fetchTimetable(year: Year, group: Group, semigroup: Semigroup) {
         let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-2/tabelar/\(year.id).html")!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 guard let html = String(data: data, encoding: .ascii) else { return }
-                completionHandler(try? SwiftSoup
-                    .parse(html)
-                    .select("table")[group.index]
-                    .select("tr")[1...]
-                    .map { tr in
-                        try tr.select("td")
-                    }
-                    .map { tds in
-                        try tds.map { td in
-                            try td.text()
+                do {
+                    try SwiftSoup
+                        .parse(html)
+                        .select("table")[group.index]
+                        .select("tr")[1...]
+                        .map { tr in
+                            try tr.select("td")
                         }
-                    }
-                    .compactMap { data -> Course? in
-                        if
-                            data[4].split(separator: "/").count == 2,
-                            let last = data[4].last,
-                            String(last) != semigroup.id
-                        {
-                            return nil
+                        .map { tds in
+                            try tds.map { td in
+                                try td.text()
+                            }
                         }
-                        let day: Day
-                        switch data[0] {
-                            case "Luni":
-                                day = .monday
-                            case "Marti":
-                                day = .tuesday
-                            case "Miercuri":
-                                day = .wednesday
-                            case "Joi":
-                                day = .thursday
-                            case "Vineri":
-                                day = .friday
-                            default:
-                                return nil
+                        .forEach { data in
+                            if
+                                data[4].split(separator: "/").count == 2,
+                                let last = data[4].last,
+                                String(last) != semigroup.id
+                            {
+                                return
+                            }
+                            let day: Day
+                            switch data[0] {
+                                case "Luni":
+                                    day = .monday
+                                case "Marti":
+                                    day = .tuesday
+                                case "Miercuri":
+                                    day = .wednesday
+                                case "Joi":
+                                    day = .thursday
+                                case "Vineri":
+                                    day = .friday
+                                default:
+                                    return
+                            }
+                            let hourArray = data[1].split(separator: "-")
+                            let startHour = Int(String(hourArray[0]))!
+                            let endHour = Int(String(hourArray[1]))!
+                            let course = Course(context: PersistenceController.shared.container.viewContext)
+                            course.day = day.rawValue
+                            course.startHour = Int16(startHour)
+                            course.endHour = Int16(endHour)
+                            course.frequency = data[2]
+                            course.room = data[3]
+                            course.type = data[5]
+                            course.name = data[6]
+                            course.teacher = data[7]
                         }
-                        let hourArray = data[1].split(separator: "-")
-                        let startHour = Int(String(hourArray[0]))!
-                        let endHour = Int(String(hourArray[1]))!
-                        let course = Course(context: self.persistenceController.container.viewContext)
-                        course.day = day.rawValue
-                        course.startHour = Int16(startHour)
-                        course.endHour = Int16(endHour)
-                        course.frequency = data[2]
-                        course.room = data[3]
-                        course.type = data[5]
-                        course.name = data[6]
-                        course.teacher = data[7]
-                        return course
-                    }
-                )
+                    try PersistenceController.shared
+                        .container
+                        .viewContext
+                        .save()
+                } catch {
+                    self.errorOccurred.send(error)
+                }
             }
         }.resume()
     }
@@ -161,5 +196,54 @@ class TimetableService {
                 )
             }
         }.resume()
+    }
+    
+    func clearTimetable() {
+        do {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Course.fetchRequest()
+            let result = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
+            for managedObject in result {
+                if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
+                    PersistenceController.shared
+                        .container
+                        .viewContext
+                        .delete(managedObjectData)
+                }
+            }
+        } catch {
+            self.errorOccurred.send(error)
+        }
+    }
+    
+    func updateTimetable() {
+        self.clearTimetable()
+        if
+            let year = self.year,
+            let group = self.group,
+            let semigroup = self.semigroup
+        {
+            self.fetchTimetable(
+                year: year,
+                group: group,
+                semigroup: semigroup
+            )
+        }
+    }
+    
+    func validateCourse(_ course: Course) -> Bool {
+        if self.weekViewType != .both {
+            if
+                let week = course.frequency.last,
+                let number = Int(String(week))
+            {
+                if
+                    (number == 1 && self.weekViewType != .one) ||
+                    (number == 2 && self.weekViewType != .two)
+                {
+                    return false
+                }
+            }
+        }
+        return true
     }
 }

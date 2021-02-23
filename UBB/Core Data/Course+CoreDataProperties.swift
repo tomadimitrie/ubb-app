@@ -9,11 +9,9 @@
 import Foundation
 import CoreData
 
-
 extension Course {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Course> {
-        return NSFetchRequest<Course>(entityName: "Course")
+    public class func fetchRequest() -> NSFetchRequest<Course> {
+        NSFetchRequest<Course>(entityName: "Course")
     }
 
     @NSManaged public var day: String
@@ -24,9 +22,6 @@ extension Course {
     @NSManaged public var startHour: Int16
     @NSManaged public var teacher: String
     @NSManaged public var type: String
-
 }
 
-extension Course : Identifiable {
-
-}
+extension Course : Identifiable {}

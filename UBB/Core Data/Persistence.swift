@@ -1,10 +1,3 @@
-//
-//  Persistence.swift
-//  UBB
-//
-//  Created by Dimitrie-Toma Furdui on 07/10/2020.
-//
-
 import CoreData
 
 struct PersistenceController {
@@ -12,15 +5,15 @@ struct PersistenceController {
 
     let container: NSPersistentContainer
 
-    init(inMemory: Bool = false) {
+    private init(inMemory: Bool = false) {
         self.container = NSPersistentContainer(name: "Timetable")
         if inMemory {
             self.container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
-        self.container.loadPersistentStores(completionHandler: { storeDescription, error in
+        self.container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
+        }
     }
 }
