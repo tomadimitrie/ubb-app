@@ -1,4 +1,5 @@
 import SwiftUI
+import Sentry
 
 struct TimetableView: View {
     @EnvironmentObject private var timetableService: TimetableService
@@ -47,6 +48,7 @@ struct TimetableView: View {
                     let number = Int(String(week))
                 {
                     Text("week \(number)")
+                        .multilineTextAlignment(.center)
                 }
             }
             .frame(width: UIScreen.main.bounds.width * 0.15)
@@ -86,6 +88,7 @@ struct TimetableView: View {
             .navigationTitle("Timetable")
             .toolbar {
                 Button("Redownload") {
+                    SentrySDK.capture(message: "hello")
                     self.timetableService.updateTimetable()
                 }
                 .disabled(self.timetable.count == 0)

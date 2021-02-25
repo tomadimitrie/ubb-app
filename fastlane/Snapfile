@@ -1,0 +1,21 @@
+devices([
+  "iPhone 8",
+  "iPhone 8 Plus",
+  "iPhone SE (1st generation)",
+  "iPhone X",
+  "iPhone 12 Pro Max",
+])
+
+languages([
+  "en-US",
+])
+
+scheme("UBBUITests")
+
+clear_previous_screenshots(true)
+
+override_status_bar(true)
+
+dark_mode(true)
+
+concurrent_simulators(false)

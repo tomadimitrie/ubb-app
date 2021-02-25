@@ -1,7 +1,18 @@
 import SwiftUI
+import Sentry
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        SentrySDK.start { options in
+            options.dsn = "https://f3581c20a24649a6aa35e5379509df93@o516992.ingest.sentry.io/5647908"
+        }
+        return true
+    }
+}
 
 @main
 struct UBBApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
     @StateObject var timetableService = TimetableService()
     let persistenceController = PersistenceController.shared
 

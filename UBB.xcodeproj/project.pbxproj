@@ -20,7 +20,20 @@
 		E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */; };
 		E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D5E252D2D64002935D7 /* Persistence.swift */; };
 		E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E23116B42523EA5E00835BA6 /* SwiftSoup */; };
+		E29C8C0325E5C44A001687DD /* UBBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0225E5C44A001687DD /* UBBUITests.swift */; };
+		E29C8C0D25E5C497001687DD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */; };
+		E2A510A525E64FBF001EE636 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = E2A510A425E64FBF001EE636 /* Sentry */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E29C8C0525E5C44A001687DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E23116982523EA1E00835BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E231169F2523EA1E00835BA6;
+			remoteInfo = UBB;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -37,6 +50,10 @@
 		E26F6A272527E4D7002F74CC /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Timetable.xcdatamodel; sourceTree = "<group>"; };
 		E27D4D5E252D2D64002935D7 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		E29C8C0025E5C44A001687DD /* UBBUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBBUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E29C8C0225E5C44A001687DD /* UBBUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBUITests.swift; sourceTree = "<group>"; };
+		E29C8C0425E5C44A001687DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +62,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */,
+				E2A510A525E64FBF001EE636 /* Sentry in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E29C8BFD25E5C44A001687DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				E23116A22523EA1E00835BA6 /* UBB */,
+				E29C8C0125E5C44A001687DD /* UBBUITests */,
 				E23116A12523EA1E00835BA6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				E23116A02523EA1E00835BA6 /* UBB.app */,
+				E29C8C0025E5C44A001687DD /* UBBUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +162,16 @@
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
+		E29C8C0125E5C44A001687DD /* UBBUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */,
+				E29C8C0225E5C44A001687DD /* UBBUITests.swift */,
+				E29C8C0425E5C44A001687DD /* Info.plist */,
+			);
+			path = UBBUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -153,10 +190,29 @@
 			name = UBB;
 			packageProductDependencies = (
 				E23116B42523EA5E00835BA6 /* SwiftSoup */,
+				E2A510A425E64FBF001EE636 /* Sentry */,
 			);
 			productName = UBB;
 			productReference = E23116A02523EA1E00835BA6 /* UBB.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E29C8BFF25E5C44A001687DD /* UBBUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E29C8C0725E5C44A001687DD /* Build configuration list for PBXNativeTarget "UBBUITests" */;
+			buildPhases = (
+				E29C8BFC25E5C44A001687DD /* Sources */,
+				E29C8BFD25E5C44A001687DD /* Frameworks */,
+				E29C8BFE25E5C44A001687DD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E29C8C0625E5C44A001687DD /* PBXTargetDependency */,
+			);
+			name = UBBUITests;
+			productName = UBBUITests;
+			productReference = E29C8C0025E5C44A001687DD /* UBBUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -164,11 +220,15 @@
 		E23116982523EA1E00835BA6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					E231169F2523EA1E00835BA6 = {
 						CreatedOnToolsVersion = 12.0.1;
+					};
+					E29C8BFF25E5C44A001687DD = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = E231169F2523EA1E00835BA6;
 					};
 				};
 			};
@@ -183,12 +243,14 @@
 			mainGroup = E23116972523EA1E00835BA6;
 			packageReferences = (
 				E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = E23116A12523EA1E00835BA6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				E231169F2523EA1E00835BA6 /* UBB */,
+				E29C8BFF25E5C44A001687DD /* UBBUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -200,6 +262,13 @@
 			files = (
 				E23116AB2523EA2000835BA6 /* Preview Assets.xcassets in Resources */,
 				E23116A82523EA2000835BA6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E29C8BFE25E5C44A001687DD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +292,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E29C8BFC25E5C44A001687DD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29C8C0325E5C44A001687DD /* UBBUITests.swift in Sources */,
+				E29C8C0D25E5C497001687DD /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E29C8C0625E5C44A001687DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E231169F2523EA1E00835BA6 /* UBB */;
+			targetProxy = E29C8C0525E5C44A001687DD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E23116AD2523EA2000835BA6 /* Debug */ = {
@@ -347,7 +433,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
@@ -359,8 +446,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -369,7 +457,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
@@ -381,8 +470,49 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E29C8C0825E5C44A001687DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7M3E2N6MMD;
+				INFOPLIST_FILE = UBBUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toma.UBBUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UBB;
+			};
+			name = Debug;
+		};
+		E29C8C0925E5C44A001687DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7M3E2N6MMD;
+				INFOPLIST_FILE = UBBUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toma.UBBUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UBB;
 			};
 			name = Release;
 		};
@@ -407,6 +537,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E29C8C0725E5C44A001687DD /* Build configuration list for PBXNativeTarget "UBBUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E29C8C0825E5C44A001687DD /* Debug */,
+				E29C8C0925E5C44A001687DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -418,6 +557,14 @@
 				minimumVersion = 2.3.2;
 			};
 		};
+		E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -425,6 +572,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		E2A510A425E64FBF001EE636 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 

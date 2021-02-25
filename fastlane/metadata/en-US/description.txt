@@ -1,0 +1,10 @@
+Timetable for Babes-Bolyai University, Computer Science section
+
+Features:
+- timetable depending on year, group, semigroup
+- ability to filter the timetable by even/odd weeks
+
+Upcoming:
+- notifications
+- widgets
+- more display types

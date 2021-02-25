@@ -89,7 +89,7 @@ struct SettingView<T: Item>: View {
                             self.onYearPress(item)
                             self.presentationMode.wrappedValue.dismiss()
                         }) {
-                            Text("Year \(index + 1)")
+                            Text("Year \(index + 1) (\(item.id))")
                         }
                     }
                 }

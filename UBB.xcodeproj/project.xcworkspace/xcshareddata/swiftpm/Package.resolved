@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Sentry",
+        "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
+        "state": {
+          "branch": null,
+          "revision": "42513a14a68f1ddefd28e244ff967311983c2aea",
+          "version": "6.2.0"
+        }
+      },
+      {
         "package": "SwiftSoup",
         "repositoryURL": "https://github.com/scinfu/SwiftSoup.git",
         "state": {

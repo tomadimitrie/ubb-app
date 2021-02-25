@@ -1,0 +1,21 @@
+default_platform(:ios)
+
+platform :ios do
+  lane :release do
+    capture_screenshots
+    build_app(scheme: "UBB", include_bitcode: true)
+    upload_to_app_store
+  end
+  
+  lane :beta do
+    capture_screenshots
+    build_app(scheme: "UBB", include_bitcode: true)
+    upload_to_testflight
+  end
+  
+  lane :upload_symbols do
+    download_dsyms # this is the important part
+    sentry_upload_dsym
+  end
+end
+
