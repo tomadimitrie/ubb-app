@@ -10,26 +10,25 @@ struct EditCoursesView: View {
     
     var body: some View {
         NavigationView {
-            if loaded {
-                List(selection: self.$selectionKeeper) {
-                    ForEach(self.timetableService.uniqueCourseNames, id: \.self) { name in
-                        Text(name)
-                    }
+            List(selection: self.$selectionKeeper) {
+                ForEach(self.timetableService.uniqueCourseNames, id: \.self) { name in
+                    Text(name)
                 }
-                .environment(\.editMode, .constant(.active))
-                .onChange(of: self.selectionKeeper) { selection in
-                    self.hiddenCourses =
-                        self.timetableService
-                            .uniqueCourseNames
-                            .asSet
-                            .symmetricDifference(self.selectionKeeper)
-                            .asArray
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
+            }
+            .environment(\.editMode, .constant(.active))
+            .onChange(of: self.selectionKeeper) { selection in
+                guard self.loaded else { return }
+                self.hiddenCourses =
+                    self.timetableService
+                        .uniqueCourseNames
+                        .asSet
+                        .symmetricDifference(self.selectionKeeper)
+                        .asArray
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }
             }

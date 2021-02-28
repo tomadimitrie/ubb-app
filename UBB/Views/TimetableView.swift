@@ -10,8 +10,20 @@ struct TimetableView: View {
         ]
     ) private var timetable: FetchedResults<Course>
     @Binding var activeTab: Int
-    @State var isEditSheetShown = false
-    @State var hiddenCourses = UserDefaults.standard.stringArray(forKey: "hiddenCourses") ?? []
+    @State private var isEditSheetShown = false
+    @State private var hiddenCourses: [String] = []
+    @State private var loaded = false
+    
+    var hiddenCoursesUserDefaultsKey: String? {
+        if
+            let year = self.timetableService.year?.id,
+            let group = self.timetableService.group?.id
+        {
+            let semigroup = self.timetableService.semigroup?.id ?? "|"
+            return "\(year)-\(group)-\(semigroup)-hiddenCourses"
+        }
+        return nil
+    }
     
     private var placeholder: some View {
         SwiftUI.Group {
@@ -113,7 +125,25 @@ struct TimetableView: View {
                 .environmentObject(self.timetableService)
             }
             .onChange(of: self.hiddenCourses) { hiddenCourses in
-                UserDefaults.standard.set(hiddenCourses, forKey: "hiddenCourses")
+                guard self.loaded else { return }
+                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
+                    UserDefaults
+                        .standard
+                        .set(
+                            hiddenCourses,
+                            forKey: hiddenCoursesUserDefaultsKey
+                        )
+                }
+            }
+            .onAppear {
+                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
+                    self.hiddenCourses = UserDefaults
+                        .standard
+                        .stringArray(
+                            forKey: hiddenCoursesUserDefaultsKey
+                        ) ?? []
+                }
+                self.loaded = true
             }
         }
     }
