@@ -23,6 +23,9 @@
 		E29C8C0325E5C44A001687DD /* UBBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0225E5C44A001687DD /* UBBUITests.swift */; };
 		E29C8C0D25E5C497001687DD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */; };
 		E2A510A525E64FBF001EE636 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = E2A510A425E64FBF001EE636 /* Sentry */; };
+		E2D6D58825E9CA48005FF1A5 /* EditCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */; };
+		E2D6D58C25E9CE68005FF1A5 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */; };
+		E2D6D59025E9D531005FF1A5 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +57,9 @@
 		E29C8C0225E5C44A001687DD /* UBBUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBUITests.swift; sourceTree = "<group>"; };
 		E29C8C0425E5C44A001687DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
+		E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCoursesView.swift; sourceTree = "<group>"; };
+		E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				E26F6A272527E4D7002F74CC /* UserDefault.swift */,
+				E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */,
+				E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -147,6 +155,7 @@
 			children = (
 				E23116A52523EA1E00835BA6 /* TimetableView.swift */,
 				E26CEBC52527507B00BF4333 /* SettingsView.swift */,
+				E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -281,10 +290,13 @@
 			files = (
 				E203F8D2252D3F3000061917 /* Course+CoreDataClass.swift in Sources */,
 				E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */,
+				E2D6D59025E9D531005FF1A5 /* Set+Extensions.swift in Sources */,
+				E2D6D58825E9CA48005FF1A5 /* EditCoursesView.swift in Sources */,
 				E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */,
 				E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */,
 				E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */,
 				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
+				E2D6D58C25E9CE68005FF1A5 /* Array+Extensions.swift in Sources */,
 				E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */,
 				E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,
@@ -435,6 +447,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
@@ -449,6 +462,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -459,6 +473,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
@@ -473,6 +488,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

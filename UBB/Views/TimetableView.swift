@@ -10,7 +10,9 @@ struct TimetableView: View {
         ]
     ) private var timetable: FetchedResults<Course>
     @Binding var activeTab: Int
-
+    @State var isEditSheetShown = false
+    @State var hiddenCourses = UserDefaults.standard.stringArray(forKey: "hiddenCourses") ?? []
+    
     private var placeholder: some View {
         SwiftUI.Group {
             Text("It's lonely here")
@@ -65,7 +67,10 @@ struct TimetableView: View {
             ForEach(Day.allCases, id: \.self) { day in
                 Section(header: Text(day.rawValue.capitalized)) {
                     ForEach(self.timetable.filter { $0.day == day.rawValue }, id: \.id) { course in
-                        if self.timetableService.validateCourse(course) {
+                        if
+                            self.timetableService.validateCourse(course),
+                            !self.hiddenCourses.contains(course.name)
+                        {
                             self.cell(course)
                         }
                     }
@@ -87,11 +92,28 @@ struct TimetableView: View {
             .animation(.default)
             .navigationTitle("Timetable")
             .toolbar {
-                Button("Redownload") {
-                    SentrySDK.capture(message: "hello")
-                    self.timetableService.updateTimetable()
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Edit") {
+                        self.isEditSheetShown = true
+                    }
                 }
-                .disabled(self.timetable.count == 0)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Redownload") {
+                        self.timetableService.updateTimetable()
+                    }
+                    .disabled(self.timetable.count == 0)
+                }
+            }
+            .sheet(isPresented: self.$isEditSheetShown) {
+                EditCoursesView(
+                    hiddenCourses: self.$hiddenCourses
+                )
+                .environmentObject(self.timetableService)
+            }
+            .onChange(of: self.hiddenCourses) { hiddenCourses in
+                UserDefaults.standard.set(hiddenCourses, forKey: "hiddenCourses")
             }
         }
     }

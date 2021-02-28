@@ -6,7 +6,7 @@ class UserDefault<Value: Codable> {
     let initialValue: Value?
     let key: String
 
-    init(wrappedValue: Value?, _ key: String) {
+    init(wrappedValue: Value? = nil, _ key: String) {
         self.key = key
         self.initialValue = wrappedValue
     }

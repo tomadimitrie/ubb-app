@@ -4,7 +4,7 @@ import Combine
 import CoreData
 
 class TimetableService: ObservableObject {
-    @UserDefault("year") var year: Year? = nil {
+    @UserDefault("year") var year: Year? {
         willSet {
             self.group = nil
             self.semigroup = nil
@@ -13,7 +13,7 @@ class TimetableService: ObservableObject {
         }
     }
 
-    @UserDefault("group") var group: Group? = nil {
+    @UserDefault("group") var group: Group? {
         willSet {
             if self.semigroup != Semigroup.default {
                 self.semigroup = nil
@@ -28,7 +28,7 @@ class TimetableService: ObservableObject {
         }
     }
 
-    @UserDefault("semigroup") var semigroup: Semigroup? = nil {
+    @UserDefault("semigroup") var semigroup: Semigroup? {
         willSet {
             self.objectWillChange.send()
         }
@@ -36,6 +36,7 @@ class TimetableService: ObservableObject {
             self.updateTimetable()
         }
     }
+    
 
     @Published var weekViewType: WeekViewType = .both {
         willSet {
@@ -176,18 +177,15 @@ class TimetableService: ObservableObject {
                 guard let text = String(data: data, encoding: .ascii) else { return }
                 let regex = try! NSRegularExpression(pattern: "\(group.id)\\/\\d")
                 let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
-                let matches = Array(
-                    Set(
-                        results
-                            .map {
-                                String(text[Range($0.range, in: text)!])
-                            }
-                            .map {
-                                Int($0.components(separatedBy: "/")[1])!
-                            }
-                    )
-                )
-                .sorted()
+                let matches = results
+                    .map {
+                        String(text[Range($0.range, in: text)!])
+                    }
+                    .map {
+                        Int($0.components(separatedBy: "/")[1])!
+                    }
+                    .unique
+                    .sorted()
                 completionHandler(
                     matches.map {
                         Semigroup(id: "\($0)", value: "\($0)", index: $0)
@@ -244,5 +242,25 @@ class TimetableService: ObservableObject {
             }
         }
         return true
+    }
+    
+    var uniqueCourseNames: [String] {
+        do {
+            return try (PersistenceController
+                .shared
+                .container
+                .viewContext
+                .fetch(
+                    Course.fetchRequest() as NSFetchRequest<NSFetchRequestResult>
+                ) as! [Course])
+                .map {
+                    $0.name
+                }
+                .unique
+                .sorted()
+        } catch {
+            self.errorOccurred.send(error)
+            return []
+        }
     }
 }
