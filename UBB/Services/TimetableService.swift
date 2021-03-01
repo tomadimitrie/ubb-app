@@ -172,7 +172,7 @@ class TimetableService: ObservableObject {
     
     func getSemigroups(year: Year, group: Group, completionHandler: @escaping ([Semigroup]?) -> ()) {
         let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-1/tabelar/\(year.id).html")!
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession(configuration: .ephemeral).dataTask(with: url) { data, response, error in
             if let data = data {
                 guard let text = String(data: data, encoding: .ascii) else { return }
                 let regex = try! NSRegularExpression(pattern: "\(group.id)\\/\\d")
