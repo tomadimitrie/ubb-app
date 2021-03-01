@@ -10,7 +10,21 @@ struct TimetableView: View {
         ]
     ) private var timetable: FetchedResults<Course>
     @Binding var activeTab: Int
-
+    @State private var isEditSheetShown = false
+    @State private var hiddenCourses: [String] = []
+    @State private var loaded = false
+    
+    var hiddenCoursesUserDefaultsKey: String? {
+        if
+            let year = self.timetableService.year?.id,
+            let group = self.timetableService.group?.id
+        {
+            let semigroup = self.timetableService.semigroup?.id ?? "|"
+            return "\(year)-\(group)-\(semigroup)-hiddenCourses"
+        }
+        return nil
+    }
+    
     private var placeholder: some View {
         SwiftUI.Group {
             Text("It's lonely here")
@@ -65,7 +79,10 @@ struct TimetableView: View {
             ForEach(Day.allCases, id: \.self) { day in
                 Section(header: Text(day.rawValue.capitalized)) {
                     ForEach(self.timetable.filter { $0.day == day.rawValue }, id: \.id) { course in
-                        if self.timetableService.validateCourse(course) {
+                        if
+                            self.timetableService.validateCourse(course),
+                            !self.hiddenCourses.contains(course.name)
+                        {
                             self.cell(course)
                         }
                     }
@@ -87,11 +104,46 @@ struct TimetableView: View {
             .animation(.default)
             .navigationTitle("Timetable")
             .toolbar {
-                Button("Redownload") {
-                    SentrySDK.capture(message: "hello")
-                    self.timetableService.updateTimetable()
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Edit") {
+                        self.isEditSheetShown = true
+                    }
                 }
-                .disabled(self.timetable.count == 0)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Redownload") {
+                        self.timetableService.updateTimetable()
+                    }
+                    .disabled(self.timetable.count == 0)
+                }
+            }
+            .sheet(isPresented: self.$isEditSheetShown) {
+                EditCoursesView(
+                    hiddenCourses: self.$hiddenCourses
+                )
+                .environmentObject(self.timetableService)
+            }
+            .onChange(of: self.hiddenCourses) { hiddenCourses in
+                guard self.loaded else { return }
+                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
+                    UserDefaults
+                        .standard
+                        .set(
+                            hiddenCourses,
+                            forKey: hiddenCoursesUserDefaultsKey
+                        )
+                }
+            }
+            .onAppear {
+                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
+                    self.hiddenCourses = UserDefaults
+                        .standard
+                        .stringArray(
+                            forKey: hiddenCoursesUserDefaultsKey
+                        ) ?? []
+                }
+                self.loaded = true
             }
         }
     }
