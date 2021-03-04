@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 import Combine
 import CoreData
+import SwiftUI
 
 class TimetableService: ObservableObject {
     @UserDefault("year") var year: Year? {
@@ -36,9 +37,33 @@ class TimetableService: ObservableObject {
             self.updateTimetable()
         }
     }
-    
+        
 
-    @Published var weekViewType: WeekViewType = .both {
+    @Published var weekViewType: WeekViewType = {
+        if Calendar.current.component(.weekOfYear, from: Date()) % 2 == 0 {
+            return .two
+        } else {
+            return .one
+        }
+    }() {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+    
+    @UserDefaultColor("courseColor") var courseColor: Color? {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+    
+    @UserDefaultColor("seminarColor") var seminarColor: Color? {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+    
+    @UserDefaultColor("labColor") var labColor: Color? {
         willSet {
             self.objectWillChange.send()
         }

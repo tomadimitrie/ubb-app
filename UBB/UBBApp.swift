@@ -6,6 +6,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         SentrySDK.start { options in
             options.dsn = "https://f3581c20a24649a6aa35e5379509df93@o516992.ingest.sentry.io/5647908"
         }
+        if ProcessInfo.processInfo.arguments.contains("test") {
+            UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        }
         return true
     }
 }

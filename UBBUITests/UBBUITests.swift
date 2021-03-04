@@ -19,6 +19,7 @@ class UBBUITests: XCTestCase {
 
     func testScreenshots() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["test"]
         app.launch()
         setupSnapshot(app)
         
@@ -31,8 +32,30 @@ class UBBUITests: XCTestCase {
         tablesQuery.buttons["913"].tap()
         tablesQuery.buttons["Semigroup "].tap()
         tablesQuery.buttons["2"].tap()
+        
+        for (name, color) in [
+            ("Course", "85D2FF"),
+            ("Seminar", "0AA5FF"),
+            ("Lab", "0067A3")
+        ] {
+            tablesQuery.otherElements["\(name) color"].children(matching: .button).element.tap()
+            let scrollViewsQuery = app.scrollViews
+            let elementsQuery = scrollViewsQuery.otherElements
+            let slidersButton = elementsQuery.buttons["Sliders"]
+            slidersButton.tap()
+            let textField = scrollViewsQuery.otherElements.containing(.button, identifier:"Floating color picker").children(matching: .textField).element(boundBy: 3)
+            textField.tap()
+            for _ in 0...5 {
+                textField.typeText(XCUIKeyboardKey.delete.rawValue)
+            }
+            textField.typeText(color)
+            let closeButton = elementsQuery.buttons["close"]
+            closeButton.tap()
+        }
         snapshot("02Settings")
         app.tabBars["Tab Bar"].buttons["Timetable"].tap()
         snapshot("01Timetable")
+        app.navigationBars["Timetable"].buttons["Edit"].tap()
+        snapshot("03Edit")
     }
 }

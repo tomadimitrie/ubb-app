@@ -3,6 +3,11 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var timetableService: TimetableService
     
+    @State private var isColorPickerSheetShown = false
+    @State private var courseColor = Color.black
+    @State private var seminarColor = Color.black
+    @State private var labColor = Color.black
+
     var body: some View {
         NavigationView {
             List {
@@ -20,9 +25,43 @@ struct SettingsView: View {
                     self.timetableService.group == nil ||
                     self.timetableService.semigroup?.id == "default"
                 )
+                ColorPicker(
+                    "Course color",
+                    selection: self.$courseColor
+                )
+                .onChange(of: self.courseColor) { courseColor in
+                    self.timetableService.courseColor = courseColor
+                }
+                ColorPicker(
+                    "Seminar color",
+                    selection: self.$seminarColor
+                )
+                .onChange(of: self.seminarColor) { seminarColor in
+                    self.timetableService.seminarColor = seminarColor
+                }
+                ColorPicker(
+                    "Lab color",
+                    selection: self.$labColor
+                )
+                .onChange(of: self.labColor) { labColor in
+                    self.timetableService.labColor = labColor
+                }
             }
             .navigationTitle(Text("Settings"))
+            .onAppear {
+                self.courseColor = self.timetableService.courseColor ?? Color.black
+                self.seminarColor = self.timetableService.seminarColor ?? Color.black
+                self.labColor = self.timetableService.labColor ?? Color.black
+            }
         }
+    }
+}
+
+struct ColorPickerView: View {
+    @State private var color = Color.white
+
+    var body: some View {
+        ColorPicker("a", selection: self.$color)
     }
 }
 

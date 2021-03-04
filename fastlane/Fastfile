@@ -1,16 +1,15 @@
 default_platform(:ios)
 
 platform :ios do
-  lane :release do
-    increment_version_number(bump_type: "minor")
+  lane :release do |options|
+    increment_version_number(bump_type: options[:bump])
     capture_screenshots
     build_app(scheme: "UBB", include_bitcode: true)
     upload_to_app_store
   end
   
-  lane :beta do
-    increment_version_number(bump_type: "minor")
-    capture_screenshots
+  lane :beta do |options|
+    increment_version_number(bump_type: options[:bump])
     build_app(scheme: "UBB", include_bitcode: true)
     upload_to_testflight
   end

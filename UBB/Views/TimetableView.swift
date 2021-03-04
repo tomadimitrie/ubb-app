@@ -72,6 +72,24 @@ struct TimetableView: View {
                 Text(course.teacher)
             }
         }
+        .if(course.type == "Curs") {
+            $0.listRowBackground(self.timetableService.courseColor)
+                .if(self.timetableService.courseColor?.isLight ?? false) {
+                    $0.foregroundColor(.black)
+                }
+        }
+        .if(course.type == "Seminar") {
+            $0.listRowBackground(self.timetableService.seminarColor)
+                .if(self.timetableService.seminarColor?.isLight ?? false) {
+                    $0.foregroundColor(.black)
+                }
+        }
+        .if(course.type == "Laborator") {
+            $0.listRowBackground(self.timetableService.labColor)
+                .if(self.timetableService.labColor?.isLight ?? false) {
+                    $0.foregroundColor(.black)
+                }
+        }
     }
 
     private var list: some View {
@@ -99,6 +117,16 @@ struct TimetableView: View {
                 } else {
                     self.picker
                     self.list
+                        .onAppear {
+                            if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
+                                self.hiddenCourses = UserDefaults
+                                    .standard
+                                    .stringArray(
+                                        forKey: hiddenCoursesUserDefaultsKey
+                                    ) ?? []
+                            }
+                            self.loaded = true
+                        }
                 }
             }
             .animation(.default)
@@ -134,16 +162,6 @@ struct TimetableView: View {
                             forKey: hiddenCoursesUserDefaultsKey
                         )
                 }
-            }
-            .onAppear {
-                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
-                    self.hiddenCourses = UserDefaults
-                        .standard
-                        .stringArray(
-                            forKey: hiddenCoursesUserDefaultsKey
-                        ) ?? []
-                }
-                self.loaded = true
             }
         }
     }

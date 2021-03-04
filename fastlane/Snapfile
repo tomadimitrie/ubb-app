@@ -18,4 +18,6 @@ override_status_bar(true)
 
 dark_mode(true)
 
-concurrent_simulators(false)
+reinstall_app(true)
+
+app_identifier("com.tomadimitrie.ubb-schedule")

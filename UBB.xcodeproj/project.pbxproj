@@ -19,6 +19,8 @@
 		E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F6A272527E4D7002F74CC /* UserDefault.swift */; };
 		E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */; };
 		E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D5E252D2D64002935D7 /* Persistence.swift */; };
+		E28222D925ED37720085012F /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28222D825ED37720085012F /* View+Extensions.swift */; };
+		E28222DD25ED38670085012F /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28222DC25ED38670085012F /* Color+Extensions.swift */; };
 		E2935E1A25EB19C10003C944 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2935E1925EB19C10003C944 /* UserDefaults+Extensions.swift */; };
 		E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E23116B42523EA5E00835BA6 /* SwiftSoup */; };
 		E29C8C0325E5C44A001687DD /* UBBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0225E5C44A001687DD /* UBBUITests.swift */; };
@@ -54,6 +56,8 @@
 		E26F6A272527E4D7002F74CC /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Timetable.xcdatamodel; sourceTree = "<group>"; };
 		E27D4D5E252D2D64002935D7 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		E28222D825ED37720085012F /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		E28222DC25ED38670085012F /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		E2935E1925EB19C10003C944 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		E29C8C0025E5C44A001687DD /* UBBUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBBUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29C8C0225E5C44A001687DD /* UBBUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBUITests.swift; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */,
 				E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */,
 				E2935E1925EB19C10003C944 /* UserDefaults+Extensions.swift */,
+				E28222D825ED37720085012F /* View+Extensions.swift */,
+				E28222DC25ED38670085012F /* Color+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -302,8 +308,10 @@
 				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
 				E2D6D58C25E9CE68005FF1A5 /* Array+Extensions.swift in Sources */,
 				E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */,
+				E28222DD25ED38670085012F /* Color+Extensions.swift in Sources */,
 				E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,
+				E28222D925ED37720085012F /* View+Extensions.swift in Sources */,
 				E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,7 +459,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.2.0;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
@@ -477,7 +485,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.2.0;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
