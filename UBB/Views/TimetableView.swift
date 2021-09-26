@@ -50,12 +50,21 @@ struct TimetableView: View {
         .padding([.top, .leading, .trailing])
         .pickerStyle(SegmentedPickerStyle())
     }
+    
+    private func formatNumber(_ number: Int16) -> String {
+        switch number {
+        case 0...9:
+            return "0\(number)"
+        default:
+            return String(number)
+        }
+    }
 
     private func cell(_ course: Course) -> some View {
         HStack {
             VStack {
-                Text("\(course.startHour):00")
-                Text("\(course.endHour):00")
+                Text("\(formatNumber(course.startHour)):\(formatNumber(course.startMinute))")
+                Text("\(formatNumber(course.endHour)):\(formatNumber(course.endMinute))")
                 if
                     self.timetableService.weekViewType == .both,
                     let week = course.frequency.last,
@@ -70,6 +79,7 @@ struct TimetableView: View {
             VStack(alignment: .leading) {
                 Text("\(course.type.uppercased()): \(course.name)")
                 Text(course.teacher)
+                Text("Room: \(course.room)")
             }
         }
         .if(course.type == "Curs") {
@@ -112,7 +122,7 @@ struct TimetableView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if self.timetable.count == 0 {
+                if !self.timetableService.areSettingsSet {
                     self.placeholder
                 } else {
                     self.picker
@@ -143,7 +153,7 @@ struct TimetableView: View {
                     Button("Redownload") {
                         self.timetableService.updateTimetable()
                     }
-                    .disabled(self.timetable.count == 0)
+                    .disabled(!self.timetableService.areSettingsSet)
                 }
             }
             .sheet(isPresented: self.$isEditSheetShown) {

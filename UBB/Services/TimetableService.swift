@@ -40,7 +40,9 @@ class TimetableService: ObservableObject {
         
 
     @Published var weekViewType: WeekViewType = {
-        if Calendar.current.component(.weekOfYear, from: Date()) % 2 == 0 {
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.firstWeekday = 2
+        if calendar.component(.weekOfYear, from: Date()) % 2 == 0 {
             return .two
         } else {
             return .one
@@ -70,9 +72,16 @@ class TimetableService: ObservableObject {
     }
 
     @Published var errorOccurred = PassthroughSubject<Error, Never>()
+    
+    var areSettingsSet: Bool {
+        return
+            self.year != nil &&
+            self.group != nil &&
+            self.semigroup != nil
+    }
 
     func fetchTimetable(year: Year, group: Group, semigroup: Semigroup) {
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2020-2/tabelar/\(year.id).html")!
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2021-1/tabelar/\(year.id).html")!
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 guard let html = String(data: data, encoding: .ascii) else { return }
@@ -112,13 +121,19 @@ class TimetableService: ObservableObject {
                                 default:
                                     return
                             }
-                            let hourArray = data[1].split(separator: "-")
-                            let startHour = Int(String(hourArray[0]))!
-                            let endHour = Int(String(hourArray[1]))!
+                            let timeArray = data[1].split(separator: "-")
+                            let startArray = timeArray[0].split(separator: ".")
+                            let endArray = timeArray[1].split(separator: ".")
+                            let startHour = Int(String(startArray[0]))!
+                            let startMinute = Int(String(startArray[1]))!
+                            let endHour = Int(String(endArray[0]))!
+                            let endMinute = Int(String(endArray[1]))!
                             let course = Course(context: PersistenceController.shared.container.viewContext)
                             course.day = day.rawValue
                             course.startHour = Int16(startHour)
+                            course.startMinute = Int16(startMinute)
                             course.endHour = Int16(endHour)
+                            course.endMinute = Int16(endMinute)
                             course.frequency = data[2]
                             course.room = data[3]
                             course.type = data[5]
