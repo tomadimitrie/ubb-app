@@ -1,6 +1,6 @@
 import Foundation
 
-class Item: Codable {
+class Item: Codable, CustomStringConvertible {
     let id: String
     let value: String
     let index: Int
@@ -9,6 +9,10 @@ class Item: Codable {
         self.id = id
         self.value = value
         self.index = index
+    }
+
+    var description: String {
+        "Item(id: \(id), value: \(value), index: \(index))"
     }
 }
 

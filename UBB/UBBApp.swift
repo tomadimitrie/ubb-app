@@ -16,7 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct UBBApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate: AppDelegate
-    @StateObject var timetableService = TimetableService()
+    @StateObject var timetableService = TimetableService.shared
     let persistenceController = PersistenceController.shared
 
     @State var activeTab: Int = 0
@@ -39,16 +39,25 @@ struct UBBApp: App {
                     }
                     .tag(1)
             }
-            .environmentObject(self.timetableService)
-            .environment(\.managedObjectContext, self.persistenceController.container.viewContext)
-            .onReceive(self.timetableService.errorOccurred) { error in
+            .onAppear {
+                Task {
+                    await timetableService.updateTimetable()
+                }
+            }
+            .environmentObject(timetableService)
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            .onReceive(timetableService.errorOccurred) { error in
                 self.errorMessage = error.localizedDescription
                 self.isAlertShown = true
             }
             .alert(isPresented: self.$isAlertShown) {
                 Alert(
                     title: Text("An error occured :("),
-                    message: Text(self.errorMessage!)
+                    message: Text(errorMessage!),
+                    primaryButton: .default(Text("Ok")),
+                    secondaryButton: .default(Text("Copy debug information")) {
+                        UIPasteboard.general.string = errorMessage
+                    }
                 )
             }
         }

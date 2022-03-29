@@ -9,25 +9,21 @@ struct TimetableView: View {
             NSSortDescriptor(key: "startHour", ascending: true)
         ]
     ) private var timetable: FetchedResults<Course>
+    @FetchRequest(
+        entity: EditedCourse.entity(),
+        sortDescriptors: []
+    ) private var editedCourses: FetchedResults<EditedCourse>
     @Binding var activeTab: Int
-    @State private var isEditSheetShown = false
-    @State private var hiddenCourses: [String] = []
-    @State private var loaded = false
+    @State private var placeholderMessage: String?
+    @State private var currentlyEditingCourse: Course?
+    @State private var isHideCoursesShown = false
     
-    var hiddenCoursesUserDefaultsKey: String? {
-        if
-            let year = self.timetableService.year?.id,
-            let group = self.timetableService.group?.id
-        {
-            let semigroup = self.timetableService.semigroup?.id ?? "|"
-            return "\(year)-\(group)-\(semigroup)-hiddenCourses"
-        }
-        return nil
-    }
-    
-    private var placeholder: some View {
+    private var renderPlaceholder: some View {
         SwiftUI.Group {
             Text("It's lonely here")
+            if let placeholderMessage = placeholderMessage {
+                Text(placeholderMessage)
+            }
             Text("Go to Settings to configure your timetable")
             Button(action: {
                 self.activeTab = 1
@@ -38,7 +34,8 @@ struct TimetableView: View {
         }
     }
 
-    private var picker: some View {
+    private var renderPicker: some View {
+        // top picker to select week
         Picker(selection: self.$timetableService.weekViewType, label: Text("Week view")) {
             Text("Week 1")
                 .tag(WeekViewType.one)
@@ -60,118 +57,153 @@ struct TimetableView: View {
         }
     }
 
-    private func cell(_ course: Course) -> some View {
-        HStack {
-            VStack {
-                Text("\(formatNumber(course.startHour)):\(formatNumber(course.startMinute))")
-                Text("\(formatNumber(course.endHour)):\(formatNumber(course.endMinute))")
+    private func renderCell(_ course: Course) -> some View {
+        let existingCourse = editedCourses.first {
+            $0.id == course.id
+        }
+        var view: some View {
+            SwiftUI.Group {
                 if
-                    self.timetableService.weekViewType == .both,
-                    let week = course.frequency.last,
-                    let number = Int(String(week))
+                    let existingCourse = existingCourse,
+                    existingCourse.isHidden
                 {
-                    Text("week \(number)")
-                        .multilineTextAlignment(.center)
+                    if timetableService.showHidden {
+                        HStack {
+                            Spacer()
+                            Text("hidden")
+                                .font(.system(size: 10))
+                            Spacer()
+                        }
+                        .frame(height: 5)
+                    }
+                } else {
+                    HStack {
+                        VStack {
+                            Text("\(formatNumber(course.startHour)):\(formatNumber(course.startMinute))")
+                            Text("\(formatNumber(course.endHour)):\(formatNumber(course.endMinute))")
+                            if
+                                // only show when both weeks are selected
+                                timetableService.weekViewType == .both,
+                                let week = course.frequency.last,
+                                let number = Int(String(week))
+                            {
+                                Text("week \(number)")
+                                    .multilineTextAlignment(.center)
+                            }
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 0.15)
+                        Divider()
+                        VStack(alignment: .leading) {
+                            Text("\(course.type.uppercased()): \(course.name)")
+                            Text(course.teacher)
+                            Text("Room: \(course.room)")
+                        }
+                    }
+                    .if(course.type == "Curs") {
+                        $0.listRowBackground(timetableService.courseColor)
+                            .if(timetableService.courseColor?.isLight ?? false) {
+                                $0.foregroundColor(.black)
+                            }
+                    }
+                    .if(course.type == "Seminar") {
+                        $0.listRowBackground(timetableService.seminarColor)
+                            .if(timetableService.seminarColor?.isLight ?? false) {
+                                $0.foregroundColor(.black)
+                            }
+                    }
+                    .if(course.type == "Laborator") {
+                        $0.listRowBackground(timetableService.labColor)
+                            .if(timetableService.labColor?.isLight ?? false) {
+                                $0.foregroundColor(.black)
+                            }
+                    }
                 }
             }
-            .frame(width: UIScreen.main.bounds.width * 0.15)
-            Divider()
-            VStack(alignment: .leading) {
-                Text("\(course.type.uppercased()): \(course.name)")
-                Text(course.teacher)
-                Text("Room: \(course.room)")
+        }
+        return view
+            .swipeActions {
+                Button {
+                    currentlyEditingCourse = course
+                } label: {
+                    Label("Edit", systemImage: "slider.horizontal.3")
+                }
+                .tint(.yellow)
             }
-        }
-        .if(course.type == "Curs") {
-            $0.listRowBackground(self.timetableService.courseColor)
-                .if(self.timetableService.courseColor?.isLight ?? false) {
-                    $0.foregroundColor(.black)
-                }
-        }
-        .if(course.type == "Seminar") {
-            $0.listRowBackground(self.timetableService.seminarColor)
-                .if(self.timetableService.seminarColor?.isLight ?? false) {
-                    $0.foregroundColor(.black)
-                }
-        }
-        .if(course.type == "Laborator") {
-            $0.listRowBackground(self.timetableService.labColor)
-                .if(self.timetableService.labColor?.isLight ?? false) {
-                    $0.foregroundColor(.black)
-                }
-        }
     }
 
-    private var list: some View {
+    private var renderList: some View {
         List {
             ForEach(Day.allCases, id: \.self) { day in
                 Section(header: Text(day.rawValue.capitalized)) {
-                    ForEach(self.timetable.filter { $0.day == day.rawValue }, id: \.id) { course in
-                        if
-                            self.timetableService.validateCourse(course),
-                            !self.hiddenCourses.contains(course.name)
-                        {
-                            self.cell(course)
+                    ForEach(timetable.filter { $0.day == day.rawValue }, id: \.id) { course in
+                        if timetableService.validateCourse(course) {
+                            self.renderCell(course)
                         }
                     }
                 }
             }
         }
+        .environment(\.defaultMinListRowHeight, 10)
     }
 
     var body: some View {
         NavigationView {
             VStack {
-                if !self.timetableService.areSettingsSet {
-                    self.placeholder
+                // the app is newly installed - show a placeholder
+                if placeholderMessage != nil {
+                    renderPlaceholder
                 } else {
-                    self.picker
-                    self.list
-                        .onAppear {
-                            if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
-                                self.hiddenCourses = UserDefaults
-                                    .standard
-                                    .stringArray(
-                                        forKey: hiddenCoursesUserDefaultsKey
-                                    ) ?? []
-                            }
-                            self.loaded = true
-                        }
+                    renderPicker
+                    renderList
                 }
             }
-            .animation(.default)
+            .animation(.default, value: UUID())
             .navigationTitle("Timetable")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Edit") {
-                        self.isEditSheetShown = true
-                    }
-                }
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Redownload") {
-                        self.timetableService.updateTimetable()
+                        Task {
+                            await timetableService.updateTimetable()
+                        }
                     }
-                    .disabled(!self.timetableService.areSettingsSet)
+                    // if the settings are not set yet, we cannot download the timetable
+                    // because we don't know which one
+                    .disabled(!timetableService.areSettingsSet)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Edit") {
+                        isHideCoursesShown = true
+                    }
                 }
             }
-            .sheet(isPresented: self.$isEditSheetShown) {
-                EditCoursesView(
-                    hiddenCourses: self.$hiddenCourses
+            .onAppear {
+                Task {
+                    let values = (timetableService.year, timetableService.group, timetableService.semigroup)
+                    switch values {
+                    case (.some, nil, nil):
+                        placeholderMessage = "Year is set but group and semigroup are not"
+                    case (.some, .some, nil):
+                        if await timetableService.hasSemigroups {
+                            placeholderMessage = "Year and group are set, but semigroup is not"
+                        } else {
+                            placeholderMessage = nil
+                        }
+                    default:
+                        placeholderMessage = nil
+                    }
+                }
+            }
+            .sheet(item: $currentlyEditingCourse, onDismiss: {
+                currentlyEditingCourse = nil
+            }) { course in
+                EditCourseView(
+                    course: course
                 )
-                .environmentObject(self.timetableService)
+                .environmentObject(timetableService)
             }
-            .onChange(of: self.hiddenCourses) { hiddenCourses in
-                guard self.loaded else { return }
-                if let hiddenCoursesUserDefaultsKey = self.hiddenCoursesUserDefaultsKey {
-                    UserDefaults
-                        .standard
-                        .set(
-                            hiddenCourses,
-                            forKey: hiddenCoursesUserDefaultsKey
-                        )
-                }
+            .sheet(isPresented: $isHideCoursesShown) {
+                HideCoursesView()
+                    .environmentObject(timetableService)
             }
         }
     }

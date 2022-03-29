@@ -13,6 +13,11 @@ extension Course {
     public class func fetchRequest() -> NSFetchRequest<Course> {
         NSFetchRequest<Course>(entityName: "Course")
     }
+    
+    public class func dictionaryFetchRequest() -> NSFetchRequest<NSDictionary> {
+        NSFetchRequest<NSDictionary>(entityName: "Course")
+    }
+
 
     @NSManaged public var day: String
     @NSManaged public var endHour: Int16
@@ -25,5 +30,3 @@ extension Course {
     @NSManaged public var teacher: String
     @NSManaged public var type: String
 }
-
-extension Course : Identifiable {}

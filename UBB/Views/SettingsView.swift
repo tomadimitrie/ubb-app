@@ -1,4 +1,5 @@
 import SwiftUI
+import Collections
 
 struct SettingsView: View {
     @EnvironmentObject var timetableService: TimetableService
@@ -7,51 +8,59 @@ struct SettingsView: View {
     @State private var courseColor = Color.black
     @State private var seminarColor = Color.black
     @State private var labColor = Color.black
+    @State private var showHidden = false
 
     var body: some View {
         NavigationView {
             List {
                 NavigationLink(destination: SettingView<Year>()) {
-                    Text("Year \(self.timetableService.year.map { "(\($0.id))" } ?? "")")
+                    Text("Year \(timetableService.year.map { "(\($0.id))" } ?? "")")
                 }
                 NavigationLink(destination: SettingView<Group>()) {
-                    Text("Group \(self.timetableService.group.map { "(\($0.id))" } ?? "")")
+                    Text("Group \(timetableService.group.map { "(\($0.id))" } ?? "")")
                 }
-                .disabled(self.timetableService.year == nil)
+                .disabled(timetableService.year == nil)
                 NavigationLink(destination: SettingView<Semigroup>()) {
-                    Text("Semigroup \(self.timetableService.semigroup.map { "(\($0.id))" } ?? "")")
+                    Text("Semigroup \(timetableService.semigroup.map { "(\($0.id))" } ?? "")")
                 }
                 .disabled(
-                    self.timetableService.group == nil ||
-                    self.timetableService.semigroup?.id == "default"
+                    timetableService.group == nil ||
+                    timetableService.semigroup?.id == "default"
                 )
                 ColorPicker(
                     "Course color",
-                    selection: self.$courseColor
+                    selection: $courseColor
                 )
-                .onChange(of: self.courseColor) { courseColor in
-                    self.timetableService.courseColor = courseColor
+                .onChange(of: courseColor) { courseColor in
+                    timetableService.courseColor = courseColor
                 }
                 ColorPicker(
                     "Seminar color",
-                    selection: self.$seminarColor
+                    selection: $seminarColor
                 )
-                .onChange(of: self.seminarColor) { seminarColor in
-                    self.timetableService.seminarColor = seminarColor
+                .onChange(of: seminarColor) { seminarColor in
+                    timetableService.seminarColor = seminarColor
                 }
                 ColorPicker(
                     "Lab color",
-                    selection: self.$labColor
+                    selection: $labColor
                 )
-                .onChange(of: self.labColor) { labColor in
-                    self.timetableService.labColor = labColor
+                .onChange(of: labColor) { labColor in
+                    timetableService.labColor = labColor
+                }
+                Toggle(isOn: $showHidden) {
+                    Text("Show hidden")
+                }
+                .onChange(of: showHidden) { showHidden in
+                    timetableService.showHidden = showHidden
                 }
             }
             .navigationTitle(Text("Settings"))
             .onAppear {
-                self.courseColor = self.timetableService.courseColor ?? Color.black
-                self.seminarColor = self.timetableService.seminarColor ?? Color.black
-                self.labColor = self.timetableService.labColor ?? Color.black
+                courseColor = timetableService.courseColor ?? Color.black
+                seminarColor = timetableService.seminarColor ?? Color.black
+                labColor = timetableService.labColor ?? Color.black
+                showHidden = timetableService.showHidden
             }
         }
     }
@@ -69,66 +78,67 @@ struct SettingView<T: Item>: View {
     @EnvironmentObject var timetableService: TimetableService
     @Environment(\.presentationMode) var presentationMode
     
-    @State var items: [[T]] = []
+    @State var items: [T] = []
 
     private func onYearPress(_ item: T) {
-        self.timetableService.year = item as? Year
+        timetableService.year = item as? Year
     }
 
     private func onGroupPress(_ item: T) {
-        self.timetableService.getSemigroups(year: self.timetableService.year!, group: item as! Group) { semigroups in
-            if let semigroups = semigroups {
+        Task {
+            if let semigroups = try? await timetableService.getSemigroups(year: self.timetableService.year!, group: item as! Group) {
                 DispatchQueue.main.async {
                     if semigroups.count == 0 {
-                        self.timetableService.semigroup = Semigroup.default
+                        timetableService.semigroup = Semigroup.default
                     }
-                    self.timetableService.group = item as? Group
+                    timetableService.group = item as? Group
                 }
             }
         }
     }
 
     private func onSemigroupPress(_ item: T) {
-        self.timetableService.semigroup = item as? Semigroup
+        timetableService.semigroup = item as? Semigroup
     }
 
     private func onAppearForYear() {
-        self.timetableService.getYears { years in
-            if let years = years {
-                self.items = years as! [[T]]
+        Task {
+            if let years = try? await timetableService.getYears() {
+                items = years as! [T]
             }
         }
     }
 
     private func onAppearForGroup() {
-        self.timetableService.getGroups(for: self.timetableService.year!) { groups in
-            if let groups = groups {
-                self.items = [groups] as! [[T]]
+        Task {
+            if let groups = try? await timetableService.getGroups(for: self.timetableService.year!) {
+                items = groups as! [T]
             }
         }
     }
 
     private func onAppearForSemigroup() {
-        self.timetableService.getSemigroups(
-            year: self.timetableService.year!,
-            group: self.timetableService.group!
-        ) { semigroups in
-            if let semigroups = semigroups {
-                self.items = [semigroups] as! [[T]]
+        Task {
+            if let semigroups = try? await timetableService.getSemigroups(
+                year: timetableService.year!,
+                group: timetableService.group!
+            ) {
+                self.items = semigroups as! [T]
             }
         }
     }
     
-    var yearList: some View {
-        List {
-            ForEach(Array(zip(self.items.indices, self.items)), id: \.0) { index, items in
-                Section(header: Text(items[0].value)) {
-                    ForEach(Array(zip(items.indices, items)), id: \.0) { index, item in
+    var renderYearList: some View {
+        let grouped = items.grouped(by: \.value)
+        return List {
+            ForEach(Array(grouped.keys), id: \.self) { key in
+                Section(header: Text(key)) {
+                    ForEach(grouped[key] ?? [], id: \.index) { item in
                         Button(action: {
-                            self.onYearPress(item)
-                            self.presentationMode.wrappedValue.dismiss()
+                            onYearPress(item)
+                            presentationMode.wrappedValue.dismiss()
                         }) {
-                            Text("Year \(index + 1) (\(item.id))")
+                            Text("Year \(item.index + 1) (\(item.id))")
                         }
                     }
                 }
@@ -136,9 +146,9 @@ struct SettingView<T: Item>: View {
         }
     }
     
-    var list: some View {
+    var renderOtherList: some View {
         List {
-            ForEach(self.items.count > 0 ? self.items[0] : [], id: \.id) { item in
+            ForEach(items, id: \.id) { item in
                 Button(action: {
                     switch T.self {
                         case is Group.Type:
@@ -148,7 +158,7 @@ struct SettingView<T: Item>: View {
                         default:
                             ()
                     }
-                    self.presentationMode.wrappedValue.dismiss()
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text(item.value)
                 }
@@ -159,20 +169,20 @@ struct SettingView<T: Item>: View {
     var body: some View {
         VStack {
             if T.self is Year.Type {
-                self.yearList
+                self.renderYearList
             } else {
-                self.list
+                self.renderOtherList
             }
         }
         .navigationTitle(NSStringFromClass(T.self).components(separatedBy: ".").last!)
         .onAppear {
             switch T.self {
                 case is Year.Type:
-                    self.onAppearForYear()
+                    onAppearForYear()
                 case is Group.Type:
-                    self.onAppearForGroup()
+                    onAppearForGroup()
                 case is Semigroup.Type:
-                    self.onAppearForSemigroup()
+                    onAppearForSemigroup()
                 default:
                     ()
             }

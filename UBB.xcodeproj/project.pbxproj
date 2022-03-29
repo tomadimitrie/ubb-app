@@ -7,14 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3669461E06114AA8ABDD904C /* Elements+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366945C2885FFAC42F1213A4 /* Elements+Extensions.swift */; };
+		366949FB50103CD45B9EE73E /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36694C1D752D64E5DEC87FA0 /* Error.swift */; };
 		E203F8D2252D3F3000061917 /* Course+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */; };
 		E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */; };
+		E228EB2527C40E0A00352722 /* EditCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E228EB2427C40E0A00352722 /* EditCourseView.swift */; };
+		E228EB2727C40EAA00352722 /* Course+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E228EB2627C40EAA00352722 /* Course+Extensions.swift */; };
+		E228EB2D27C4215400352722 /* EditedCourse+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E228EB2C27C4215400352722 /* EditedCourse+Extensions.swift */; };
+		E228EB3027C4274300352722 /* EditedCourse+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E228EB2E27C4274300352722 /* EditedCourse+CoreDataClass.swift */; };
+		E228EB3127C4274300352722 /* EditedCourse+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E228EB2F27C4274300352722 /* EditedCourse+CoreDataProperties.swift */; };
 		E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116A32523EA1E00835BA6 /* UBBApp.swift */; };
 		E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116A52523EA1E00835BA6 /* TimetableView.swift */; };
 		E23116A82523EA2000835BA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23116A72523EA2000835BA6 /* Assets.xcassets */; };
 		E23116AB2523EA2000835BA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23116AA2523EA2000835BA6 /* Preview Assets.xcassets */; };
 		E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23116B82523EA7100835BA6 /* TimetableService.swift */; };
 		E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E233F66D2528BCD2009D9399 /* TimetableTypes.swift */; };
+		E244955727D428DE000F34EA /* HideCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E244955627D428DE000F34EA /* HideCoursesView.swift */; };
 		E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CEBC52527507B00BF4333 /* SettingsView.swift */; };
 		E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F6A272527E4D7002F74CC /* UserDefault.swift */; };
 		E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */; };
@@ -26,7 +34,10 @@
 		E29C8C0325E5C44A001687DD /* UBBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0225E5C44A001687DD /* UBBUITests.swift */; };
 		E29C8C0D25E5C497001687DD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */; };
 		E2A510A525E64FBF001EE636 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = E2A510A425E64FBF001EE636 /* Sentry */; };
-		E2D6D58825E9CA48005FF1A5 /* EditCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */; };
+		E2D3D79627C2F71C00495560 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = E2D3D79527C2F71C00495560 /* Collections */; };
+		E2D3D79827C2F71C00495560 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = E2D3D79727C2F71C00495560 /* DequeModule */; };
+		E2D3D79A27C2F71C00495560 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = E2D3D79927C2F71C00495560 /* OrderedCollections */; };
+		E2D3D79C27C2FEAB00495560 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D3D79B27C2FEAB00495560 /* NSManagedObjectContext+Extensions.swift */; };
 		E2D6D58C25E9CE68005FF1A5 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */; };
 		E2D6D59025E9D531005FF1A5 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */; };
 /* End PBXBuildFile section */
@@ -42,8 +53,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		366945C2885FFAC42F1213A4 /* Elements+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Elements+Extensions.swift"; sourceTree = "<group>"; };
+		36694C1D752D64E5DEC87FA0 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E228EB2427C40E0A00352722 /* EditCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCourseView.swift; sourceTree = "<group>"; };
+		E228EB2627C40EAA00352722 /* Course+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Course+Extensions.swift"; sourceTree = "<group>"; };
+		E228EB2C27C4215400352722 /* EditedCourse+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditedCourse+Extensions.swift"; sourceTree = "<group>"; };
+		E228EB2E27C4274300352722 /* EditedCourse+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditedCourse+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E228EB2F27C4274300352722 /* EditedCourse+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditedCourse+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E23116A02523EA1E00835BA6 /* UBB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UBB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23116A32523EA1E00835BA6 /* UBBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBApp.swift; sourceTree = "<group>"; };
 		E23116A52523EA1E00835BA6 /* TimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableView.swift; sourceTree = "<group>"; };
@@ -52,6 +70,7 @@
 		E23116AC2523EA2000835BA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E23116B82523EA7100835BA6 /* TimetableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableService.swift; sourceTree = "<group>"; };
 		E233F66D2528BCD2009D9399 /* TimetableTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableTypes.swift; sourceTree = "<group>"; };
+		E244955627D428DE000F34EA /* HideCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideCoursesView.swift; sourceTree = "<group>"; };
 		E26CEBC52527507B00BF4333 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E26F6A272527E4D7002F74CC /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		E27D4D3A252D2D2A002935D7 /* Timetable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Timetable.xcdatamodel; sourceTree = "<group>"; };
@@ -63,7 +82,7 @@
 		E29C8C0225E5C44A001687DD /* UBBUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBBUITests.swift; sourceTree = "<group>"; };
 		E29C8C0425E5C44A001687DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E29C8C0C25E5C497001687DD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
-		E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCoursesView.swift; sourceTree = "<group>"; };
+		E2D3D79B27C2FEAB00495560 /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
 		E2D6D58B25E9CE68005FF1A5 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		E2D6D58F25E9D531005FF1A5 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +92,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2D3D79A27C2F71C00495560 /* OrderedCollections in Frameworks */,
+				E2D3D79627C2F71C00495560 /* Collections in Frameworks */,
+				E2D3D79827C2F71C00495560 /* DequeModule in Frameworks */,
 				E29C8BF525E5B988001687DD /* SwiftSoup in Frameworks */,
 				E2A510A525E64FBF001EE636 /* Sentry in Frameworks */,
 			);
@@ -147,6 +169,8 @@
 				E2935E1925EB19C10003C944 /* UserDefaults+Extensions.swift */,
 				E28222D825ED37720085012F /* View+Extensions.swift */,
 				E28222DC25ED38670085012F /* Color+Extensions.swift */,
+				366945C2885FFAC42F1213A4 /* Elements+Extensions.swift */,
+				E2D3D79B27C2FEAB00495560 /* NSManagedObjectContext+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -155,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				E233F66D2528BCD2009D9399 /* TimetableTypes.swift */,
+				36694C1D752D64E5DEC87FA0 /* Error.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -164,7 +189,8 @@
 			children = (
 				E23116A52523EA1E00835BA6 /* TimetableView.swift */,
 				E26CEBC52527507B00BF4333 /* SettingsView.swift */,
-				E2D6D58725E9CA48005FF1A5 /* EditCoursesView.swift */,
+				E228EB2427C40E0A00352722 /* EditCourseView.swift */,
+				E244955627D428DE000F34EA /* HideCoursesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -172,8 +198,12 @@
 		E27D4D38252D2D0B002935D7 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				E228EB2E27C4274300352722 /* EditedCourse+CoreDataClass.swift */,
+				E228EB2F27C4274300352722 /* EditedCourse+CoreDataProperties.swift */,
+				E228EB2C27C4215400352722 /* EditedCourse+Extensions.swift */,
 				E203F8D0252D3F3000061917 /* Course+CoreDataClass.swift */,
 				E203F8D1252D3F3000061917 /* Course+CoreDataProperties.swift */,
+				E228EB2627C40EAA00352722 /* Course+Extensions.swift */,
 				E27D4D39252D2D2A002935D7 /* Timetable.xcdatamodeld */,
 				E27D4D5E252D2D64002935D7 /* Persistence.swift */,
 			);
@@ -209,6 +239,9 @@
 			packageProductDependencies = (
 				E23116B42523EA5E00835BA6 /* SwiftSoup */,
 				E2A510A425E64FBF001EE636 /* Sentry */,
+				E2D3D79527C2F71C00495560 /* Collections */,
+				E2D3D79727C2F71C00495560 /* DequeModule */,
+				E2D3D79927C2F71C00495560 /* OrderedCollections */,
 			);
 			productName = UBB;
 			productReference = E23116A02523EA1E00835BA6 /* UBB.app */;
@@ -262,6 +295,7 @@
 			packageReferences = (
 				E23116B32523EA5E00835BA6 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				E2D3D79427C2F71C00495560 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = E23116A12523EA1E00835BA6 /* Products */;
 			projectDirPath = "";
@@ -300,19 +334,27 @@
 				E203F8D2252D3F3000061917 /* Course+CoreDataClass.swift in Sources */,
 				E27D4D5F252D2D64002935D7 /* Persistence.swift in Sources */,
 				E2D6D59025E9D531005FF1A5 /* Set+Extensions.swift in Sources */,
-				E2D6D58825E9CA48005FF1A5 /* EditCoursesView.swift in Sources */,
 				E2935E1A25EB19C10003C944 /* UserDefaults+Extensions.swift in Sources */,
 				E26CEBC62527507B00BF4333 /* SettingsView.swift in Sources */,
+				E228EB2527C40E0A00352722 /* EditCourseView.swift in Sources */,
+				E228EB3027C4274300352722 /* EditedCourse+CoreDataClass.swift in Sources */,
+				E228EB2727C40EAA00352722 /* Course+Extensions.swift in Sources */,
+				E228EB2D27C4215400352722 /* EditedCourse+Extensions.swift in Sources */,
+				E2D3D79C27C2FEAB00495560 /* NSManagedObjectContext+Extensions.swift in Sources */,
 				E23116A62523EA1E00835BA6 /* TimetableView.swift in Sources */,
 				E26F6A282527E4D7002F74CC /* UserDefault.swift in Sources */,
 				E233F66E2528BCD2009D9399 /* TimetableTypes.swift in Sources */,
+				E228EB3127C4274300352722 /* EditedCourse+CoreDataProperties.swift in Sources */,
 				E2D6D58C25E9CE68005FF1A5 /* Array+Extensions.swift in Sources */,
 				E203F8D3252D3F3000061917 /* Course+CoreDataProperties.swift in Sources */,
 				E28222DD25ED38670085012F /* Color+Extensions.swift in Sources */,
+				E244955727D428DE000F34EA /* HideCoursesView.swift in Sources */,
 				E27D4D3B252D2D2A002935D7 /* Timetable.xcdatamodeld in Sources */,
 				E23116B92523EA7100835BA6 /* TimetableService.swift in Sources */,
 				E28222D925ED37720085012F /* View+Extensions.swift in Sources */,
 				E23116A42523EA1E00835BA6 /* UBBApp.swift in Sources */,
+				366949FB50103CD45B9EE73E /* Error.swift in Sources */,
+				3669461E06114AA8ABDD904C /* Elements+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,21 +499,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.2.0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.7.2;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = UBB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -483,21 +526,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.2.0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.7.2;
 				DEVELOPMENT_ASSET_PATHS = "\"UBB/Preview Content\"";
 				DEVELOPMENT_TEAM = 7M3E2N6MMD;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = UBB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tomadimitrie.ubb-schedule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.tomadimitrie.ubb-schedule";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -582,7 +626,7 @@
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.2;
+				minimumVersion = 2.3.8;
 			};
 		};
 		E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -590,7 +634,15 @@
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.2.0;
+				minimumVersion = 7.9.0;
+			};
+		};
+		E2D3D79427C2F71C00495560 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -605,6 +657,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2A510A325E64FBF001EE636 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
+		};
+		E2D3D79527C2F71C00495560 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2D3D79427C2F71C00495560 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		E2D3D79727C2F71C00495560 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2D3D79427C2F71C00495560 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		E2D3D79927C2F71C00495560 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2D3D79427C2F71C00495560 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 
