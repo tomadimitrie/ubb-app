@@ -181,13 +181,15 @@ struct TimetableView: View {
                     let values = (timetableService.year, timetableService.group, timetableService.semigroup)
                     switch values {
                     case (.some, nil, nil):
-                        placeholderMessage = "Year is set but group and semigroup are not"
+                        placeholderMessage = "Year is set, but group and semigroup are not"
                     case (.some, .some, nil):
                         if await timetableService.hasSemigroups {
                             placeholderMessage = "Year and group are set, but semigroup is not"
                         } else {
                             placeholderMessage = nil
                         }
+                    case (nil, nil, nil):
+                        placeholderMessage = "Year, group and semigroup are not set"
                     default:
                         placeholderMessage = nil
                     }

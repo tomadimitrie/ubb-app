@@ -95,7 +95,7 @@ class TimetableService: ObservableObject {
         }
     }
     
-    @AppStorage("showHidden") var showHidden: Bool = true
+    @AppStorage("showHidden") var showHidden: Bool = false
 
     var areSettingsSet: Bool {
         year != nil && group != nil
@@ -103,7 +103,7 @@ class TimetableService: ObservableObject {
 
     func fetchTimetable(year: Year, group: Group, semigroup: Semigroup?) async throws {
         clearTimetable()
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2021-2/tabelar/\(year.id).html")
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2022-1/tabelar/\(year.id).html")
         guard let url = url else {
             let error = AppError(
                 message: "The timetable url was invalid",
@@ -192,12 +192,10 @@ class TimetableService: ObservableObject {
                     return
                 }
                 let timeArray = data[1].split(separator: "-")
-                let startArray = timeArray[0].split(separator: ".")
-                let endArray = timeArray[1].split(separator: ".")
-                let startHour = Int(String(startArray[0]))!
-                let startMinute = Int(String(startArray[1]))!
-                let endHour = Int(String(endArray[0]))!
-                let endMinute = Int(String(endArray[1]))!
+                let startHour = Int(timeArray[0])!
+                let startMinute = 0
+                let endHour = Int(timeArray[1])!
+                let endMinute = 0
                 let course = Course(
                     context: PersistenceController.shared.container.viewContext
                 )
@@ -219,7 +217,7 @@ class TimetableService: ObservableObject {
     }
 
     func getYears() async throws -> [Year] {
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2021-2/tabelar/index.html")
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2022-1/tabelar/index.html")
         guard let url = url else {
             let error = AppError(
                 message: "The years url was invalid",
@@ -311,7 +309,7 @@ class TimetableService: ObservableObject {
     }
 
     func getGroups(for year: Year) async throws -> [Group] {
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2021-2/tabelar/\(year.id).html")
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2022-1/tabelar/\(year.id).html")
         guard let url = url else {
             let error = AppError(
                 message: "The groups url was invalid",
@@ -387,7 +385,7 @@ class TimetableService: ObservableObject {
     }
 
     func getSemigroups(year: Year, group: Group) async throws -> [Semigroup] {
-        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2021-2/tabelar/\(year.id).html")
+        let url = URL(string: "https://www.cs.ubbcluj.ro/files/orar/2022-1/tabelar/\(year.id).html")
         guard let url = url else {
             let error = AppError(
                 message: "The subgroups url was invalid",
